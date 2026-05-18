@@ -127,6 +127,97 @@
             }
         }
 
+        @keyframes spinMandalaReverse {
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+
+        @keyframes spinMandalaSlow {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero-mandala {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 340px;
+            height: 340px;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-mandala-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero-mandala-ring-inner {
+            border-radius: 50%;
+            border-style: solid;
+            transform-origin: center center;
+        }
+
+        .hero-mandala-ring--1 .hero-mandala-ring-inner {
+            width: 320px;
+            height: 320px;
+            border-width: 1px;
+            border-color: rgba(212, 175, 55, 0.1);
+            border-style: dashed;
+            animation: spinMandala 60s linear infinite;
+        }
+
+        .hero-mandala-ring--2 .hero-mandala-ring-inner {
+            width: 260px;
+            height: 260px;
+            border-width: 1px;
+            border-color: rgba(122, 27, 46, 0.12);
+            animation: spinMandalaReverse 80s linear infinite;
+        }
+
+        .hero-mandala-ring--3 .hero-mandala-ring-inner {
+            width: 200px;
+            height: 200px;
+            border-width: 1px;
+            border-color: rgba(212, 175, 55, 0.08);
+            border-style: dashed;
+            animation: spinMandalaSlow 100s linear infinite;
+        }
+
+        .hero-mandala-ring--4 .hero-mandala-ring-inner {
+            width: 140px;
+            height: 140px;
+            border-width: 1px;
+            border-color: rgba(212, 175, 55, 0.06);
+            animation: spinMandalaReverse 120s linear infinite;
+        }
+
+        .hero-mandala-ring--5 .hero-mandala-ring-inner {
+            width: 80px;
+            height: 80px;
+            border-width: 1px;
+            border-color: rgba(122, 27, 46, 0.1);
+            border-style: dashed;
+            animation: spinMandala 90s linear infinite;
+        }
+
+        .hero-mandala-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            background: rgba(212, 175, 55, 0.12);
+            border-radius: 50%;
+        }
+
         .loader-text-container {
             margin-top: 40px;
             text-align: center;
@@ -217,7 +308,162 @@
         }
 
         #hero {
-            min-height: 100vh;
+            height: 100vh;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .hero-card {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px;
+            text-align: center;
+            background: radial-gradient(ellipse at 50% 30%, rgba(45, 11, 18, 0.15) 0%, rgba(26, 5, 10, 0.95) 100%);
+        }
+
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            pointer-events: none;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            right: 14px;
+            bottom: 14px;
+            border: 1px solid rgba(212, 175, 55, 0.08);
+            pointer-events: none;
+        }
+
+        .hero-border-outer {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 2px solid rgba(212, 175, 55, 0.12);
+            pointer-events: none;
+            box-shadow:
+                inset 0 0 40px rgba(212, 175, 55, 0.03),
+                0 0 40px rgba(212, 175, 55, 0.03);
+            animation: royalBorderGlow 4s ease-in-out infinite;
+        }
+
+        .hero-corner {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            pointer-events: none;
+        }
+
+        .hero-corner::before {
+            content: "";
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-color: rgba(212, 175, 55, 0.2);
+            border-style: solid;
+        }
+
+        .hero-corner--tl {
+            top: 20px;
+            left: 20px;
+        }
+
+        .hero-corner--tl::before {
+            top: 0;
+            left: 0;
+            border-width: 2px 0 0 2px;
+        }
+
+        .hero-corner--tr {
+            top: 20px;
+            right: 20px;
+        }
+
+        .hero-corner--tr::before {
+            top: 0;
+            right: 0;
+            border-width: 2px 2px 0 0;
+        }
+
+        .hero-corner--bl {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .hero-corner--bl::before {
+            bottom: 0;
+            left: 0;
+            border-width: 0 0 2px 2px;
+        }
+
+        .hero-corner--br {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .hero-corner--br::before {
+            bottom: 0;
+            right: 0;
+            border-width: 0 2px 2px 0;
+        }
+
+        .hero-corner-icon {
+            position: absolute;
+            font-size: 0.8rem;
+            color: var(--gold-primary);
+            opacity: 0.2;
+            pointer-events: none;
+            font-family: var(--font-serif);
+        }
+
+        .hero-corner--tl .hero-corner-icon {
+            top: -4px;
+            left: -4px;
+        }
+
+        .hero-corner--tr .hero-corner-icon {
+            top: -4px;
+            right: -4px;
+        }
+
+        .hero-corner--bl .hero-corner-icon {
+            bottom: -4px;
+            left: -4px;
+        }
+
+        .hero-corner--br .hero-corner-icon {
+            bottom: -4px;
+            right: -4px;
+        }
+
+        .hero-band {
+            position: absolute;
+            top: 10px;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+            pointer-events: none;
+        }
+
+        .hero-band--bottom {
+            top: auto;
+            bottom: 10px;
         }
 
         @keyframes borderShimmer {
@@ -334,6 +580,25 @@
             50% {
                 transform: scale(1.005);
             }
+        }
+
+        @keyframes royalBorderGlow {
+
+            0%,
+            100% {
+                border-color: rgba(212, 175, 55, 0.12);
+                box-shadow: inset 0 0 40px rgba(212, 175, 55, 0.03), 0 0 40px rgba(212, 175, 55, 0.03);
+            }
+
+            50% {
+                border-color: rgba(212, 175, 55, 0.25);
+                box-shadow: inset 0 0 60px rgba(212, 175, 55, 0.06), 0 0 60px rgba(212, 175, 55, 0.06);
+            }
+        }
+
+        50% {
+            transform: scale(1.005);
+        }
         }
 
         @keyframes glowPulse {
@@ -1137,6 +1402,65 @@
                 padding: 60px 16px;
             }
 
+            #hero {
+                padding: 0;
+            }
+
+            .hero-card {
+                padding: 30px 16px;
+            }
+
+            .hero-card::before {
+                top: 12px;
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
+            }
+
+            .hero-card::after {
+                top: 8px;
+                left: 8px;
+                right: 8px;
+                bottom: 8px;
+            }
+
+            .hero-border-outer {
+                top: 4px;
+                left: 4px;
+                right: 4px;
+                bottom: 4px;
+            }
+
+            .hero-corner {
+                width: 30px;
+                height: 30px;
+            }
+
+            .hero-corner::before {
+                width: 18px;
+                height: 18px;
+            }
+
+            .hero-corner--tl {
+                top: 12px;
+                left: 12px;
+            }
+
+            .hero-corner--tr {
+                top: 12px;
+                right: 12px;
+            }
+
+            .hero-corner--bl {
+                bottom: 12px;
+                left: 12px;
+            }
+
+            .hero-corner--br {
+                bottom: 12px;
+                right: 12px;
+            }
+
             .glass-card {
                 padding: 40px 20px;
             }
@@ -1224,7 +1548,22 @@
 
     <main>
         <section id="hero">
-            <div class="glass-card" style="background:transparent; border:none; backdrop-filter:none; box-shadow:none;">
+            <div class="hero-card">
+                <div class="hero-border-outer"></div>
+                <div class="hero-corner hero-corner--tl"><span class="hero-corner-icon">✧</span></div>
+                <div class="hero-corner hero-corner--tr"><span class="hero-corner-icon">✧</span></div>
+                <div class="hero-corner hero-corner--bl"><span class="hero-corner-icon">✧</span></div>
+                <div class="hero-corner hero-corner--br"><span class="hero-corner-icon">✧</span></div>
+                <div class="hero-band"></div>
+                <div class="hero-band hero-band--bottom"></div>
+                <div class="hero-mandala">
+                    <div class="hero-mandala-ring hero-mandala-ring--1"><div class="hero-mandala-ring-inner"></div></div>
+                    <div class="hero-mandala-ring hero-mandala-ring--2"><div class="hero-mandala-ring-inner"></div></div>
+                    <div class="hero-mandala-ring hero-mandala-ring--3"><div class="hero-mandala-ring-inner"></div></div>
+                    <div class="hero-mandala-ring hero-mandala-ring--4"><div class="hero-mandala-ring-inner"></div></div>
+                    <div class="hero-mandala-ring hero-mandala-ring--5"><div class="hero-mandala-ring-inner"></div></div>
+                    <div class="hero-mandala-dot"></div>
+                </div>
                 <!-- <p class="cinematic-sub">The Royal Union Announcement</p> -->
                 <div class="hero-initials-container">
                     <span class="initial-trigger" id="initial-m">M</span>
