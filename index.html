@@ -681,21 +681,30 @@
         let audioNode, isPlaying = false;
         const burstParticles = [];
 
-        function triggerFlowerBurst(count = 60, color = 0xD4AF37, cx = 0, cy = 0, cz = 5) {
-            const geo = new THREE.ConeGeometry(0.25, 0.5, 4);
+        function triggerFlowerBurst(count = 40, color = 0xD4AF37, cx = 0, cy = 0, cz = 5) {
+            const geo = new THREE.CircleGeometry(0.28, 6);
             for (let i = 0; i < count; i++) {
-                const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 1 });
+                const c = color === 0x7A1B2E
+                    ? new THREE.Color().setHSL(0.94 + Math.random() * 0.06, 0.35, 0.12 + Math.random() * 0.12)
+                    : color === 0xFBF5B7
+                        ? new THREE.Color().setHSL(0.1, 0.3 + Math.random() * 0.2, 0.8 + Math.random() * 0.15)
+                        : new THREE.Color().setHSL(0.1, 0.5 + Math.random() * 0.2, 0.5 + Math.random() * 0.2);
+                const mat = new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide, transparent: true, opacity: 0.9 });
                 const m = new THREE.Mesh(geo, mat);
                 m.position.set(cx, cy, cz);
+                const s = 0.5 + Math.random() * 0.5;
+                m.scale.set(s, s * (1.2 + Math.random() * 0.6), s);
+                m.rotation.z = Math.random() * Math.PI * 2;
                 const angle = Math.random() * Math.PI * 2;
-                const spd = 0.08 + Math.random() * 0.25;
+                const spd = 0.03 + Math.random() * 0.12;
                 m.userData = {
                     vx: Math.cos(angle) * spd,
-                    vy: Math.sin(angle) * spd - 0.05,
-                    vz: (Math.random() - 0.5) * 0.1,
+                    vy: Math.sin(angle) * spd - 0.03,
+                    vz: (Math.random() - 0.5) * 0.05,
                     life: 1,
-                    decay: 0.006 + Math.random() * 0.008,
-                    rot: (Math.random() - 0.5) * 0.1
+                    decay: 0.003 + Math.random() * 0.005,
+                    rotX: (Math.random() - 0.5) * 0.04,
+                    rotZ: (Math.random() - 0.5) * 0.03
                 };
                 scene.add(m);
                 burstParticles.push(m);
@@ -704,9 +713,9 @@
 
         function showFloatingText() {
             for (let i = 0; i < 6; i++) {
-                triggerFlowerBurst(35, 0xD4AF37, (Math.random() - 0.5) * 30, -15, 5 + Math.random() * 5);
-                triggerFlowerBurst(25, 0x7A1B2E, (Math.random() - 0.5) * 30, -12, 3 + Math.random() * 4);
-                triggerFlowerBurst(15, 0xFBF5B7, (Math.random() - 0.5) * 30, -10, 4 + Math.random() * 3);
+                triggerFlowerBurst(20, 0xD4AF37, (Math.random() - 0.5) * 30, -15, 5 + Math.random() * 5);
+                triggerFlowerBurst(15, 0x7A1B2E, (Math.random() - 0.5) * 30, -12, 3 + Math.random() * 4);
+                triggerFlowerBurst(10, 0xFBF5B7, (Math.random() - 0.5) * 30, -10, 4 + Math.random() * 3);
             }
         }
 
@@ -744,10 +753,18 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.querySelectorAll(".glass-card").forEach(card => {
+                        const cards = entry.target.querySelectorAll(".glass-card");
+                        cards.forEach((card, i) => {
                             if (card.dataset.animated) return;
                             card.dataset.animated = "true";
-                            gsap.from(card, { opacity: 0, y: 50, duration: 1, ease: "power2.out" });
+                            gsap.from(card, {
+                                opacity: 0,
+                                y: 40,
+                                scale: 0.97,
+                                duration: 1.2,
+                                delay: i * 0.15,
+                                ease: "power4.out"
+                            });
                         });
                         observer.unobserve(entry.target);
                     }
@@ -792,12 +809,21 @@
             starParticles = new THREE.Points(starGeometry, starMat);
             scene.add(starParticles);
 
-            const petalGeometry = new THREE.ConeGeometry(0.3, 0.6, 4);
-            const petalMat = new THREE.MeshBasicMaterial({ color: 0x7A1B2E });
-            for (let i = 0; i < 30; i++) {
-                const mesh = new THREE.Mesh(petalGeometry, petalMat);
+            const petalGeo = new THREE.CircleGeometry(0.35, 6);
+            for (let i = 0; i < 25; i++) {
+                const hue = 0.92 + Math.random() * 0.08;
+                const mat = new THREE.MeshBasicMaterial({
+                    color: new THREE.Color().setHSL(hue, 0.35 + Math.random() * 0.25, 0.12 + Math.random() * 0.15),
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const mesh = new THREE.Mesh(petalGeo, mat);
                 mesh.position.set((Math.random() - 0.5) * 50, (Math.random() - 0.5) * 50, (Math.random() - 0.5) * 20);
-                mesh.userData = { speed: 0.03 + Math.random() * 0.04 };
+                const s = 0.6 + Math.random() * 0.6;
+                mesh.scale.set(s, s * (1.3 + Math.random() * 0.6), s);
+                mesh.rotation.z = Math.random() * Math.PI * 2;
+                mesh.userData = { speed: 0.008 + Math.random() * 0.02, rotZ: (Math.random() - 0.5) * 0.015 };
                 scene.add(mesh);
                 flowerPetals.push(mesh);
             }
@@ -807,7 +833,8 @@
                 starParticles.rotation.y += 0.001;
                 flowerPetals.forEach(p => {
                     p.position.y -= p.userData.speed;
-                    p.rotation.x += 0.01;
+                    p.rotation.x += 0.006;
+                    p.rotation.z += p.userData.rotZ || 0;
                     if (p.position.y < -25) p.position.y = 25;
                 });
                 for (let i = burstParticles.length - 1; i >= 0; i--) {
@@ -815,9 +842,9 @@
                     p.position.x += p.userData.vx;
                     p.position.y += p.userData.vy;
                     p.position.z += p.userData.vz;
-                    p.userData.vy -= 0.003;
-                    p.rotation.x += p.userData.rot;
-                    p.rotation.y += p.userData.rot;
+                    p.userData.vy -= 0.0015;
+                    p.rotation.x += p.userData.rotX;
+                    p.rotation.z += p.userData.rotZ;
                     p.userData.life -= p.userData.decay;
                     p.material.opacity = Math.max(0, p.userData.life);
                     if (p.userData.life <= 0) {
@@ -869,9 +896,9 @@
                 if (revealTriggered) return;
                 if (getScratchPct() > 0.45) {
                     revealTriggered = true;
-                    triggerFlowerBurst(80, 0xD4AF37, 0, 0, 5);
-                    triggerFlowerBurst(60, 0x7A1B2E, -2, 2, 3);
-                    triggerFlowerBurst(60, 0xFBF5B7, 2, -1, 4);
+                    triggerFlowerBurst(50, 0xD4AF37, 0, 0, 5);
+                    triggerFlowerBurst(40, 0x7A1B2E, -2, 2, 3);
+                    triggerFlowerBurst(40, 0xFBF5B7, 2, -1, 4);
                     showFloatingText("✨ The Date is Revealed ✨", "#D4AF37");
                 }
             }
@@ -910,8 +937,8 @@
         // Initials Easter Eggs
         let seqM = false;
         document.getElementById("initial-m").addEventListener("click", () => {
-            triggerFlowerBurst(40, 0x7A1B2E, -2, 0, 5);
-            triggerFlowerBurst(30, 0xD4AF37, 0, 2, 4);
+            triggerFlowerBurst(25, 0x7A1B2E, -2, 0, 5);
+            triggerFlowerBurst(20, 0xD4AF37, 0, 2, 4);
             seqM = true;
             setTimeout(() => { seqM = false; }, 3000);
         });
@@ -919,13 +946,13 @@
         document.getElementById("initial-v").addEventListener("click", () => {
             if (seqM) {
                 seqM = false;
-                triggerFlowerBurst(100, 0xD4AF37, 0, 0, 6);
-                triggerFlowerBurst(80, 0x7A1B2E, -3, 3, 4);
-                triggerFlowerBurst(80, 0xFBF5B7, 3, -3, 4);
+                triggerFlowerBurst(60, 0xD4AF37, 0, 0, 6);
+                triggerFlowerBurst(50, 0x7A1B2E, -3, 3, 4);
+                triggerFlowerBurst(50, 0xFBF5B7, 3, -3, 4);
                 showFloatingText("M \u2661 V \u2014 Forever Begins", "#FBF5B7");
             } else {
-                triggerFlowerBurst(50, 0xD4AF37, 2, 0, 5);
-                triggerFlowerBurst(20, 0xFBF5B7, 0, -2, 4);
+                triggerFlowerBurst(30, 0xD4AF37, 2, 0, 5);
+                triggerFlowerBurst(15, 0xFBF5B7, 0, -2, 4);
             }
         });
 
