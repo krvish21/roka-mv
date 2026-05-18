@@ -213,6 +213,10 @@
 
         .glass-card {
             background: var(--glass-base);
+            background-image:
+                radial-gradient(circle at 25% 20%, rgba(212, 175, 55, 0.04) 0%, transparent 35%),
+                radial-gradient(circle at 75% 80%, rgba(212, 175, 55, 0.04) 0%, transparent 35%),
+                radial-gradient(circle at 50% 50%, rgba(122, 27, 46, 0.06) 0%, transparent 50%);
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -223,6 +227,76 @@
             text-align: center;
             position: relative;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 22px;
+            height: 22px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            border-left: 1px solid rgba(212, 175, 55, 0.3);
+            pointer-events: none;
+        }
+
+        .glass-card::after {
+            content: "";
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 22px;
+            height: 22px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            border-right: 1px solid rgba(212, 175, 55, 0.3);
+            pointer-events: none;
+        }
+
+        .card-corner {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            pointer-events: none;
+        }
+
+        .card-corner--tr {
+            top: 10px;
+            right: 10px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            border-right: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .card-corner--bl {
+            bottom: 10px;
+            left: 10px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            border-left: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .card-ornament {
+            position: absolute;
+            font-size: 0.65rem;
+            color: var(--gold-primary);
+            opacity: 0.18;
+            pointer-events: none;
+        }
+
+        .card-ornament--tl {
+            top: 16px;
+            left: 16px;
+        }
+        .card-ornament--tr {
+            top: 16px;
+            right: 16px;
+        }
+        .card-ornament--bl {
+            bottom: 16px;
+            left: 16px;
+        }
+        .card-ornament--br {
+            bottom: 16px;
+            right: 16px;
         }
 
         .card-frame {
@@ -627,6 +701,10 @@
         <section id="revelation">
             <div class="glass-card">
                 <div class="card-frame"></div>
+                <div class="card-corner card-corner--tr"></div>
+                <div class="card-corner card-corner--bl"></div>
+                <div class="card-ornament card-ornament--tl">◇</div>
+                <div class="card-ornament card-ornament--br">◇</div>
                 <!-- <p class="cinematic-sub">Exclusive Ritual Reveal</p> -->
                 <h2 class="grand-heading" style="font-size: 2.5rem;">Discover the Auspicious Day</h2>
                 <!-- <p class="romantic-prose" style="font-size: 1.2rem; margin-bottom:20px;">Gently scratch the golden veil
@@ -649,6 +727,10 @@
         <section id="blessings">
             <div class="glass-card">
                 <div class="card-frame"></div>
+                <div class="card-corner card-corner--tr"></div>
+                <div class="card-corner card-corner--bl"></div>
+                <div class="card-ornament card-ornament--tl">◇</div>
+                <div class="card-ornament card-ornament--br">◇</div>
                 <h2 class="grand-heading" style="font-size: 2.5rem;">Share Your Blessings</h2>
                 <div class="blessings-input-zone">
                     <input type="text" id="guest-name" class="premium-input" placeholder="Your Name">
@@ -828,6 +910,43 @@
                 flowerPetals.push(mesh);
             }
 
+            // Floating wedding rings
+            const ringGeo = new THREE.TorusGeometry(0.3, 0.06, 8, 20);
+            for (let i = 0; i < 8; i++) {
+                const ringMat = new THREE.MeshBasicMaterial({
+                    color: new THREE.Color().setHSL(0.1, 0.5 + Math.random() * 0.3, 0.5 + Math.random() * 0.2),
+                    transparent: true,
+                    opacity: 0.25
+                });
+                const ring = new THREE.Mesh(ringGeo, ringMat);
+                ring.position.set((Math.random() - 0.5) * 45, (Math.random() - 0.5) * 45, (Math.random() - 0.5) * 18);
+                ring.rotation.x = Math.random() * Math.PI;
+                ring.rotation.y = Math.random() * Math.PI;
+                const s = 0.6 + Math.random() * 0.8;
+                ring.scale.set(s, s, s);
+                ring.userData = { speed: 0.004 + Math.random() * 0.008, rotX: (Math.random() - 0.5) * 0.015, rotY: (Math.random() - 0.5) * 0.015 };
+                scene.add(ring);
+                flowerPetals.push(ring);
+            }
+
+            // Diamond sparkle gems
+            const gemGeo = new THREE.OctahedronGeometry(0.2, 0);
+            for (let i = 0; i < 12; i++) {
+                const gemMat = new THREE.MeshBasicMaterial({
+                    color: new THREE.Color().setHSL(0.08, 0.6, 0.6 + Math.random() * 0.3),
+                    transparent: true,
+                    opacity: 0.2 + Math.random() * 0.15,
+                    wireframe: true
+                });
+                const gem = new THREE.Mesh(gemGeo, gemMat);
+                gem.position.set((Math.random() - 0.5) * 55, (Math.random() - 0.5) * 55, (Math.random() - 0.5) * 20);
+                const s = 0.5 + Math.random() * 0.8;
+                gem.scale.set(s, s * (1 + Math.random() * 0.5), s);
+                gem.userData = { speed: 0.003 + Math.random() * 0.006, rotX: (Math.random() - 0.5) * 0.02, rotY: (Math.random() - 0.5) * 0.02 };
+                scene.add(gem);
+                flowerPetals.push(gem);
+            }
+
             function frameLoop() {
                 requestAnimationFrame(frameLoop);
                 starParticles.rotation.y += 0.001;
@@ -835,6 +954,8 @@
                     p.position.y -= p.userData.speed;
                     p.rotation.x += 0.006;
                     p.rotation.z += p.userData.rotZ || 0;
+                    if (p.userData.rotX) p.rotation.x += p.userData.rotX;
+                    if (p.userData.rotY) p.rotation.y += p.userData.rotY;
                     if (p.position.y < -25) p.position.y = 25;
                 });
                 for (let i = burstParticles.length - 1; i >= 0; i--) {
