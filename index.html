@@ -522,6 +522,78 @@
             }
         }
 
+        .section-nav-hint {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            opacity: 0.25;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .section-nav-hint:hover {
+            opacity: 0.5;
+        }
+
+        .section-nav-hint span {
+            font-size: 0.45rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold-primary);
+            font-family: var(--font-sans);
+        }
+
+        .section-nav-hint i {
+            font-size: 0.7rem;
+            color: var(--gold-primary);
+            animation: bobArrow 2.6s ease-in-out infinite;
+        }
+
+        @media (max-height: 700px) {
+            .hero-card { padding: 30px; height: auto; min-height: 100vh; }
+            .hero-hands { max-width: 300px; opacity: 0.5; }
+            .hero-mandala { width: 200px; height: 200px; }
+            .hero-mandala-ring--1 .hero-mandala-ring-inner { width: 190px; height: 190px; }
+            .hero-mandala-ring--2 .hero-mandala-ring-inner { width: 155px; height: 155px; }
+            .hero-mandala-ring--3 .hero-mandala-ring-inner { width: 120px; height: 120px; }
+            .hero-mandala-ring--4 .hero-mandala-ring-inner { width: 85px; height: 85px; }
+            .hero-mandala-ring--5 .hero-mandala-ring-inner { width: 50px; height: 50px; }
+            .initial-trigger { font-size: 3rem; }
+            .grand-heading { font-size: 2rem; }
+            .romantic-prose { font-size: 1.2rem; }
+            .hero-corner { width: 30px; height: 30px; }
+            .hero-corner::before { width: 18px; height: 18px; }
+            .hero-corner--tl { top: 12px; left: 12px; }
+            .hero-corner--tr { top: 12px; right: 12px; }
+            .hero-corner--bl { bottom: 12px; left: 12px; }
+            .hero-corner--br { bottom: 12px; right: 12px; }
+            section { padding: 50px 16px; }
+            .glass-card { padding: 35px 20px; }
+            .couple-photo-wrap { width: 140px; height: 180px; }
+        }
+
+        @media (max-height: 500px) {
+            .hero-hands { display: none; }
+            .hero-mandala { display: none; }
+            .initial-trigger { font-size: 2rem; }
+            .heart-center { font-size: 1.5rem; }
+            .grand-heading { font-size: 1.4rem; }
+            .romantic-prose { font-size: 0.9rem; }
+            .hero-corner { display: none; }
+            .hero-card::before, .hero-card::after { display: none; }
+            .hero-border-outer { display: none; }
+            .hero-band, .hero-band--bottom { display: none; }
+            .hero-scroll-arrow { bottom: 10px; font-size: 1.5rem; }
+            section { padding: 30px 12px; }
+            .glass-card { padding: 20px 14px; }
+            .card-frame, .card-frame-inner, .card-corner, .card-band { display: none; }
+        }
+
         @keyframes borderShimmer {
 
             0%,
@@ -1353,6 +1425,42 @@
             color: var(--gold-primary);
         }
 
+        .blessing-reactions {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(212, 175, 55, 0.08);
+        }
+
+        .react-btn {
+            background: rgba(212, 175, 55, 0.06);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: rgba(253, 251, 247, 0.6);
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: var(--font-sans);
+            user-select: none;
+        }
+
+        .react-btn:hover {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: scale(1.08);
+        }
+
+        .react-count {
+            font-size: 0.7rem;
+            font-weight: 600;
+            min-width: 12px;
+        }
+
         @keyframes blessingFadeIn {
             from {
                 opacity: 0;
@@ -1638,7 +1746,7 @@
                     the beginning of our forever
                     — the Roka Ceremony</p>
 
-                <div class="hero-scroll-arrow">⌃
+                <div class="hero-scroll-arrow">⌄
                 </div>
         </section>
 
@@ -1694,6 +1802,7 @@
                     </div>
                 </div>
             </div>
+            <div class="section-nav-hint"><span>Continue</span><i>⌄</i></div>
         </section>
 
         <section id="revelation">
@@ -1742,6 +1851,7 @@
                     <canvas id="scratch-canvas"></canvas>
                 </div>
             </div>
+            <div class="section-nav-hint"><span>Continue</span><i>⌄</i></div>
         </section>
 
         <section id="blessings">
@@ -2214,15 +2324,27 @@
             let blessUnsub = null;
 
             function renderBlessing(doc) {
-                const data = doc.data();
-                const el = document.createElement("div");
+                var data = doc.data();
+                var el = document.createElement("div");
                 el.className = "blessing-item";
                 el.dataset.id = doc.id;
-                el.innerHTML = `
-                <div class="blessing-msg">"${data.message}"</div>
-                <div class="blessing-name">— ${data.name}</div>
-            `;
+                var reactions = data.reactions || {};
+                var emojis = ["🙏","❤️","🎉","✨"];
+                var reactHtml = '<div class="blessing-reactions">';
+                emojis.forEach(function(e) {
+                    var count = reactions[e] || 0;
+                    reactHtml += '<button class="react-btn" data-emoji="' + e + '" data-id="' + doc.id + '">' + e + ' <span class="react-count">' + count + '</span></button>';
+                });
+                reactHtml += '</div>';
+                el.innerHTML =
+                    '<div class="blessing-msg">"' + escHtml(data.message) + '"</div>' +
+                    '<div class="blessing-name">— ' + escHtml(data.name) + '</div>' +
+                    reactHtml;
                 return el;
+            }
+
+            function escHtml(s) {
+                return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
             }
 
             function startBlessingsListener(limit) {
@@ -2248,6 +2370,20 @@
             }
 
             startBlessingsListener(20);
+
+            // Reaction click handler (delegated)
+            blessingsContainer.addEventListener("click", function(e) {
+                var btn = e.target.closest(".react-btn");
+                if (!btn) return;
+                var docId = btn.dataset.id;
+                var emoji = btn.dataset.emoji;
+                if (!docId || !emoji) return;
+                db.collection("blessings").doc(docId).update({
+                    ["reactions." + emoji]: firebase.firestore.FieldValue.increment(1)
+                }).catch(function(err) {
+                    console.error("Reaction failed:", err);
+                });
+            });
 
             loadMoreBtn.addEventListener("click", () => {
                 loadMoreBtn.innerText = "Loading...";
@@ -2292,6 +2428,7 @@
                 db.collection("blessings").add({
                     name: name,
                     message: msg,
+                    reactions: {},
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 }).then(() => {
                     document.getElementById("guest-name").value = "";
