@@ -466,6 +466,62 @@
             bottom: 10px;
         }
 
+        .hero-hands {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 1;
+            object-fit: contain;
+        }
+
+        .hero-scroll-arrow {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gold-primary);
+            font-size: 3.2rem;
+            opacity: 0.55;
+            animation: bobArrow 2.6s ease-in-out infinite;
+            pointer-events: none;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.2), 0 0 10px rgba(212, 175, 55, 0.1);
+            font-family: var(--font-serif);
+            line-height: 1;
+            font-weight: 300;
+        }
+
+        .hero-scroll-arrow::after {
+            content: "scroll";
+            display: block;
+            font-size: 0.45rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-family: var(--font-sans);
+            margin-top: 2px;
+            opacity: 0.35;
+            font-weight: 300;
+        }
+
+        @keyframes bobArrow {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(12px);
+                opacity: 0.7;
+            }
+        }
+
         @keyframes borderShimmer {
 
             0%,
@@ -596,10 +652,6 @@
             }
         }
 
-        50% {
-            transform: scale(1.005);
-        }
-        }
 
         @keyframes glowPulse {
 
@@ -1557,14 +1609,25 @@
                 <div class="hero-band"></div>
                 <div class="hero-band hero-band--bottom"></div>
                 <div class="hero-mandala">
-                    <div class="hero-mandala-ring hero-mandala-ring--1"><div class="hero-mandala-ring-inner"></div></div>
-                    <div class="hero-mandala-ring hero-mandala-ring--2"><div class="hero-mandala-ring-inner"></div></div>
-                    <div class="hero-mandala-ring hero-mandala-ring--3"><div class="hero-mandala-ring-inner"></div></div>
-                    <div class="hero-mandala-ring hero-mandala-ring--4"><div class="hero-mandala-ring-inner"></div></div>
-                    <div class="hero-mandala-ring hero-mandala-ring--5"><div class="hero-mandala-ring-inner"></div></div>
+                    <div class="hero-mandala-ring hero-mandala-ring--1">
+                        <div class="hero-mandala-ring-inner"></div>
+                    </div>
+                    <div class="hero-mandala-ring hero-mandala-ring--2">
+                        <div class="hero-mandala-ring-inner"></div>
+                    </div>
+                    <div class="hero-mandala-ring hero-mandala-ring--3">
+                        <div class="hero-mandala-ring-inner"></div>
+                    </div>
+                    <div class="hero-mandala-ring hero-mandala-ring--4">
+                        <div class="hero-mandala-ring-inner"></div>
+                    </div>
+                    <div class="hero-mandala-ring hero-mandala-ring--5">
+                        <div class="hero-mandala-ring-inner"></div>
+                    </div>
                     <div class="hero-mandala-dot"></div>
                 </div>
                 <!-- <p class="cinematic-sub">The Royal Union Announcement</p> -->
+                <img class="hero-hands" src="images/hands-sketch-gold.png" alt="" loading="lazy">
                 <div class="hero-initials-container">
                     <span class="initial-trigger" id="initial-m">M</span>
                     <i class="fa-solid fa-heart heart-center" id="heart-egg"></i>
@@ -1575,10 +1638,8 @@
                     the beginning of our forever
                     — the Roka Ceremony</p>
 
-                <p class="cinematic-sub" style="margin-top:40px; font-size:0.7rem; color: rgba(253,251,247,0.4);"
-                    data-text-key="hero-scroll">Scroll
-                    to explore</p>
-            </div>
+                <div class="hero-scroll-arrow">⌃
+                </div>
         </section>
 
         <section id="couple">
@@ -2041,7 +2102,7 @@
                 ctx.fillStyle = '#1A050A';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText('✦ SWIPE TO REVEAL ✦', canvas.width / 2, canvas.height / 2);
+                ctx.fillText('✦ SCRATCH TO REVEAL ✦', canvas.width / 2, canvas.height / 2);
 
                 var painting = false;
                 var revealTriggered = false;
