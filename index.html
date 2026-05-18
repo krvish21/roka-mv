@@ -1970,6 +1970,15 @@
                 }
             });
 
+            // Pause audio when tab hidden, resume when visible
+            document.addEventListener("visibilitychange", function () {
+                if (document.hidden) {
+                    if (isPlaying && audioNode) { audioNode.pause(); }
+                } else {
+                    if (isPlaying && audioNode) { audioNode.play().catch(function () {}); }
+                }
+            });
+
             // 3. THREE.JS PARTICLE AMBIENT MATRIX
             function initThreeJsUniverse() {
                 const container = document.getElementById("canvas-container");
