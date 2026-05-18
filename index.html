@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Roka Ceremony | Manasvika & Vishwajeet</title>
-    <meta name="description" content="Join us in celebrating the Roka Ceremony of Manasvika & Vishwajeet on June 19, 2026.">
-    <meta property="og:title" content="The Roka Ceremony | Manasvika & Vishwajeet">
-    <meta property="og:description" content="With joy in our hearts, we invite you to witness the beginning of our forever — the Roka Ceremony.">
+    <title data-text-key="page-title">The Roka Ceremony | Manasvika &amp; Vishwajeet</title>
+    <meta name="description" data-text-key="meta-description" content="Join us in celebrating the Roka Ceremony of Manasvika & Vishwajeet on June 19, 2026.">
+    <meta property="og:title" data-text-key="og-title" content="The Roka Ceremony | Manasvika & Vishwajeet">
+    <meta property="og:description" data-text-key="og-description" content="With joy in our hearts, we invite you to witness the beginning of our forever — the Roka Ceremony.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://roka-mv.firebaseapp.com">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
@@ -197,6 +197,7 @@
             z-index: 5;
             width: 100%;
             scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
             overflow-y: scroll;
             height: 100vh;
         }
@@ -207,8 +208,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 100px 20px;
+            padding: 80px 20px;
             scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        #hero {
+            min-height: 100vh;
         }
 
         @keyframes borderShimmer {
@@ -1012,6 +1018,10 @@
                 font-size: 1.2rem;
             }
 
+            section {
+                padding: 60px 16px;
+            }
+
             .glass-card {
                 padding: 40px 20px;
             }
@@ -1079,11 +1089,11 @@
             </svg>
         </div>
         <div class="loader-text-container">
-            <h2 class="loader-title">Two Souls. One Destiny.</h2>
-            <p class="loader-sub">A Celebration of Love Begins</p>
+            <h2 class="loader-title" data-text-key="loader-title">Two Souls. One Destiny.</h2>
+            <p class="loader-sub" data-text-key="loader-sub">A Celebration of Love Begins</p>
         </div>
         <div class="loader-progress-wrap"><div class="loader-progress-bar" id="loader-progress-bar"></div></div>
-        <button class="enter-btn" id="enter-experience-trigger">Step Into the Celebration</button>
+        <button class="enter-btn" id="enter-experience-trigger" data-text-key="enter-btn">Step Into the Celebration</button>
     </div>
 
     <div class="premium-controls">
@@ -1101,11 +1111,11 @@
                     <i class="fa-solid fa-heart heart-center" id="heart-egg"></i>
                     <span class="initial-trigger" id="initial-v">V</span>
                 </div>
-                <h1 class="grand-heading">Manasvika & Vishwajeet</h1>
-                <p class="romantic-prose">With joy in our hearts, we invite you to witness the beginning of our forever
+                <h1 class="grand-heading" data-text-key="hero-heading">Manasvika &amp; Vishwajeet</h1>
+                <p class="romantic-prose" data-text-key="hero-subtitle">With joy in our hearts, we invite you to witness the beginning of our forever
                     — the Roka Ceremony</p>
 
-                <p class="cinematic-sub" style="margin-top:40px; font-size:0.7rem; color: rgba(253,251,247,0.4);">Scroll
+                <p class="cinematic-sub" style="margin-top:40px; font-size:0.7rem; color: rgba(253,251,247,0.4);" data-text-key="hero-scroll">Scroll
                     to explore</p>
             </div>
         </section>
@@ -1134,8 +1144,8 @@
                     <div class="dust-particle dust-particle--rose"></div>
                     <div class="dust-particle dust-particle--white"></div>
                 </div>
-                <p class="cinematic-sub">Meet the Couple</p>
-                <h2 class="grand-heading" style="font-size:2.2rem;">The Bride &amp; Groom</h2>
+                <p class="cinematic-sub" data-text-key="couple-section-title">Meet the Couple</p>
+                <h2 class="grand-heading" style="font-size:2.2rem;" data-text-key="couple-heading">The Bride &amp; Groom</h2>
                 <div class="card-separator">◈</div>
                 <div class="couple-grid">
                     <div class="couple-item">
@@ -1145,8 +1155,8 @@
                                 <img class="couple-photo" src="images/manasvika-opt.jpg" alt="Manasvika" loading="lazy">
                             </picture>
                         </div>
-                        <span class="couple-name">Manasvika</span>
-                        <span class="couple-role">The Bride</span>
+                        <span class="couple-name" data-text-key="bride-name">Manasvika</span>
+                        <span class="couple-role" data-text-key="bride-role">The Bride</span>
                     </div>
                     <span class="couple-heart">♥</span>
                     <div class="couple-item">
@@ -1156,8 +1166,8 @@
                                 <img class="couple-photo" src="images/vishwajeet.jpg" alt="Vishwajeet" loading="lazy">
                             </picture>
                         </div>
-                        <span class="couple-name">Vishwajeet</span>
-                        <span class="couple-role">The Groom</span>
+                        <span class="couple-name" data-text-key="groom-name">Vishwajeet</span>
+                        <span class="couple-role" data-text-key="groom-role">The Groom</span>
                     </div>
                 </div>
             </div>
@@ -1188,18 +1198,18 @@
                     <div class="dust-particle dust-particle--white"></div>
                 </div>
                 <!-- <p class="cinematic-sub">Exclusive Ritual Reveal</p> -->
-                <h2 class="grand-heading" style="font-size: 2.5rem;">Discover the Auspicious Day</h2>
+                <h2 class="grand-heading" style="font-size: 2.5rem;" data-text-key="revelation-heading">Discover the Auspicious Day</h2>
                 <div class="card-separator">◈</div>
                 <!-- <p class="romantic-prose" style="font-size: 1.2rem; margin-bottom:20px;">Gently scratch the golden veil
                     to reveal the date we begin our journey together.</p> -->
 
                 <div class="scratch-wrapper">
                     <div class="scratch-reveal-content">
-                        <p class="cinematic-sub" style="margin-bottom: 5px;">The Auspicious Date</p>
+                        <p class="cinematic-sub" style="margin-bottom: 5px;" data-text-key="scratch-label">The Auspicious Date</p>
                         <h3 class="grand-heading"
-                            style="font-size: 2.2rem; margin-bottom: 5px; -webkit-text-fill-color: var(--ivory); color: var(--ivory);">
+                            style="font-size: 2.2rem; margin-bottom: 5px; -webkit-text-fill-color: var(--ivory); color: var(--ivory);" data-text-key="scratch-date">
                             19th June 2026</h3>
-                        <p class="romantic-prose" style="font-size: 1.2rem; color: var(--gold-primary);">The Roka
+                        <p class="romantic-prose" style="font-size: 1.2rem; color: var(--gold-primary);" data-text-key="scratch-event">The Roka
                             Ceremony</p>
                     </div>
                     <canvas id="scratch-canvas"></canvas>
@@ -1231,26 +1241,26 @@
                     <div class="dust-particle dust-particle--rose"></div>
                     <div class="dust-particle dust-particle--white"></div>
                 </div>
-                <h2 class="grand-heading" style="font-size: 2.5rem;">Share Your Blessings</h2>
+                <h2 class="grand-heading" style="font-size: 2.5rem;" data-text-key="blessings-heading">Share Your Blessings</h2>
                 <div class="card-separator">◈</div>
                 <div class="blessings-input-zone">
-                    <input type="text" id="guest-name" class="premium-input" placeholder="Your Name">
-                    <input type="text" id="guest-message" class="premium-input" placeholder="A Wish for the Couple">
-                    <button class="premium-btn" id="submit-blessing-trigger">Bless the Couple</button>
+                    <input type="text" id="guest-name" class="premium-input" placeholder="Your Name" data-text-key="guest-name-placeholder">
+                    <input type="text" id="guest-message" class="premium-input" placeholder="A Wish for the Couple" data-text-key="guest-message-placeholder">
+                    <button class="premium-btn" id="submit-blessing-trigger" data-text-key="submit-btn">Bless the Couple</button>
                 </div>
                 <div id="live-blessings-container"></div>
                 <div class="blessings-footer">
                     <div id="validation-msg"></div>
-                    <button class="blessings-load-more" id="load-more-btn" style="display:none;">Load More Blessings</button>
+                    <button class="blessings-load-more" id="load-more-btn" style="display:none;" data-text-key="load-more-btn">Load More Blessings</button>
                 </div>
             </div>
         </section>
     </main>
 
     <div id="easter-egg-overlay">
-        <h1 class="grand-heading" style="font-size:3.5rem;">A Love Story of 2 States</h1>
-        <p class="romantic-prose" style="color: var(--gold-primary);">Vishwajeet ❤️ Manasvika</p>
-        <p class="cinematic-sub" style="margin-top: 30px; font-size:0.7rem;">Click anywhere to return</p>
+        <h1 class="grand-heading" style="font-size:3.5rem;" data-text-key="easter-heading">A Love Story of 2 States</h1>
+        <p class="romantic-prose" style="color: var(--gold-primary);" data-text-key="easter-sub">Vishwajeet ❤️ Manasvika</p>
+        <p class="cinematic-sub" style="margin-top: 30px; font-size:0.7rem;" data-text-key="easter-click">Click anywhere to return</p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1260,14 +1270,61 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
     <script>
-        let scene, camera, renderer, starParticles, flowerPetals = [];
-        let audioNode, isPlaying = false;
-        const burstParticles = [];
-        let mouseX = 0, mouseY = 0;
-        document.addEventListener("mousemove", (e) => {
-            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-        });
+        var firebaseConfig = {
+            apiKey: "AIzaSyCCDqa0H04Ji9taPjBnQV2UfIVNJvQf9lA",
+            authDomain: "roka-mv.firebaseapp.com",
+            projectId: "roka-mv",
+            storageBucket: "roka-mv.firebasestorage.app",
+            messagingSenderId: "1084491538421",
+            appId: "1:1084491538421:web:3dcc5f31380f275b520abc",
+            measurementId: "G-Z7SJBTSH1F"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var textDb = firebase.firestore();
+
+        function applyOverrides(saved) {
+            if (!saved || typeof saved !== "object") return;
+            document.querySelectorAll("[data-text-key]").forEach(function(el) {
+                var key = el.dataset.textKey;
+                if (saved[key] != null) {
+                    if (el.tagName === "INPUT") {
+                        el.placeholder = saved[key];
+                    } else if (el.tagName === "META") {
+                        el.setAttribute("content", saved[key]);
+                    } else {
+                        el.textContent = saved[key];
+                    }
+                }
+            });
+            if (saved["page-title"]) {
+                document.title = saved["page-title"];
+            }
+        }
+
+        textDb.collection("settings").doc("textOverrides").get()
+            .then(function(doc) {
+                if (doc.exists) applyOverrides(doc.data());
+                startMainApp();
+            })
+            .catch(function() {
+                try {
+                    var localSaved = JSON.parse(localStorage.getItem("roka_text_overrides"));
+                    if (localSaved) applyOverrides(localSaved);
+                } catch (e) {}
+                startMainApp();
+            });
+    </script>
+
+    <script>
+        function startMainApp() {
+            var scene, camera, renderer, starParticles, flowerPetals = [];
+            var audioNode, isPlaying = false;
+            var burstParticles = [];
+            var mouseX = 0, mouseY = 0;
+            document.addEventListener("mousemove", function(e) {
+                mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            });
 
         function triggerFlowerBurst(count = 40, color = 0xD4AF37, cx = 0, cy = 0, cz = 5) {
             const geo = new THREE.CircleGeometry(0.28, 6);
@@ -1494,11 +1551,11 @@
             frameLoop();
         }
 
-        // 4. SCRATCH CARD RUNTIME (FAILSAFE MASK LAYER)
+        // 4. SCRATCH CARD RUNTIME — ONE-SWIPE REVEAL
         function setupScratchCard() {
-            const canvas = document.getElementById('scratch-canvas');
-            const wrapper = canvas.parentElement;
-            const ctx = canvas.getContext('2d');
+            var canvas = document.getElementById('scratch-canvas');
+            var wrapper = canvas.parentElement;
+            var ctx = canvas.getContext('2d');
 
             canvas.width = wrapper.clientWidth || 450;
             canvas.height = wrapper.clientHeight || 220;
@@ -1511,57 +1568,76 @@
             ctx.fillStyle = '#1A050A';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('SCRATCH TO REVEAL', canvas.width / 2, canvas.height / 2);
+            ctx.fillText('✦ SWIPE TO REVEAL ✦', canvas.width / 2, canvas.height / 2);
 
-            let painting = false;
-            let revealTriggered = false;
+            var painting = false;
+            var revealTriggered = false;
+            var swipeStartX = 0, swipeStartY = 0;
+            var hasMoved = false;
 
-            function getScratchPct() {
-                const d = ctx.getImageData(4, 4, canvas.width - 8, canvas.height - 8);
-                const px = d.data;
-                let clear = 0, total = 0;
-                for (let i = 3; i < px.length; i += 4) {
-                    total++;
-                    if (px[i] === 0) clear++;
-                }
-                return clear / total;
-            }
-
-            function checkReveal() {
+            function doReveal() {
                 if (revealTriggered) return;
-                if (getScratchPct() > 0.45) {
-                    revealTriggered = true;
-                    triggerFlowerBurst(50, 0xD4AF37, 0, 0, 5);
-                    triggerFlowerBurst(40, 0x7A1B2E, -2, 2, 3);
-                    triggerFlowerBurst(40, 0xFBF5B7, 2, -1, 4);
-                    showFloatingText("✨ The Date is Revealed ✨", "#D4AF37");
-                }
+                revealTriggered = true;
+                // Fade out the scratch overlay
+                gsap.to(canvas, {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: 'power2.inOut',
+                    onComplete: function() {
+                        canvas.style.display = 'none';
+                    }
+                });
+                // Petal celebration
+                triggerFlowerBurst(60, 0xD4AF37, 0, 0, 5);
+                triggerFlowerBurst(45, 0x7A1B2E, -2, 2, 3);
+                triggerFlowerBurst(45, 0xFBF5B7, 2, -1, 4);
+                showFloatingText();
             }
 
             function scratch(e) {
                 if (!painting) return;
+                var rect = canvas.getBoundingClientRect();
+                var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                var x = clientX - rect.left;
+                var y = clientY - rect.top;
 
-                const rect = canvas.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-                const x = clientX - rect.left;
-                const y = clientY - rect.top;
+                var dx = x - swipeStartX;
+                var dy = y - swipeStartY;
+                if (Math.sqrt(dx * dx + dy * dy) > 10) hasMoved = true;
 
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.beginPath();
-                ctx.arc(x, y, 28, 0, Math.PI * 2);
+                ctx.arc(x, y, 45, 0, Math.PI * 2);
                 ctx.fill();
             }
 
-            canvas.addEventListener('mousedown', () => painting = true);
-            canvas.addEventListener('touchstart', () => painting = true);
+            canvas.addEventListener('mousedown', function(e) {
+                painting = true;
+                hasMoved = false;
+                var rect = canvas.getBoundingClientRect();
+                swipeStartX = e.clientX - rect.left;
+                swipeStartY = e.clientY - rect.top;
+            });
+            canvas.addEventListener('touchstart', function(e) {
+                painting = true;
+                hasMoved = false;
+                var rect = canvas.getBoundingClientRect();
+                swipeStartX = e.touches[0].clientX - rect.left;
+                swipeStartY = e.touches[0].clientY - rect.top;
+            });
 
             canvas.addEventListener('mousemove', scratch);
-            canvas.addEventListener('touchmove', (e) => { scratch(e); e.preventDefault(); }, { passive: false });
+            canvas.addEventListener('touchmove', function(e) { scratch(e); e.preventDefault(); }, { passive: false });
 
-            window.addEventListener('mouseup', () => { painting = false; checkReveal(); });
-            window.addEventListener('touchend', () => { painting = false; checkReveal(); });
+            window.addEventListener('mouseup', function() {
+                painting = false;
+                if (hasMoved && !revealTriggered) doReveal();
+            });
+            window.addEventListener('touchend', function() {
+                painting = false;
+                if (hasMoved && !revealTriggered) doReveal();
+            });
         }
 
         // Initials Easter Eggs
@@ -1587,17 +1663,6 @@
         });
 
         // 6. FIREBASE BLESSINGS SYSTEM
-        const firebaseConfig = {
-            apiKey: "AIzaSyCCDqa0H04Ji9taPjBnQV2UfIVNJvQf9lA",
-            authDomain: "roka-mv.firebaseapp.com",
-            projectId: "roka-mv",
-            storageBucket: "roka-mv.firebasestorage.app",
-            messagingSenderId: "1084491538421",
-            appId: "1:1084491538421:web:3dcc5f31380f275b520abc",
-            measurementId: "G-Z7SJBTSH1F"
-        };
-
-        firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const blessingsContainer = document.getElementById("live-blessings-container");
         const submitBtn = document.getElementById("submit-blessing-trigger");
@@ -1708,6 +1773,7 @@
         document.getElementById("easter-egg-overlay").addEventListener("click", () => {
             document.getElementById("easter-egg-overlay").style.display = "none";
         });
+        } // end startMainApp
     </script>
 </body>
 

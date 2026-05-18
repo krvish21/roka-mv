@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings — Roka Ceremony</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #1A050A;
+            color: #FDFBF7;
+            font-family: 'Montserrat', sans-serif;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .settings-wrap {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #B38728 0%, #FBF5B7 50%, #DAA520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: rgba(253,251,247,0.4);
+            margin-bottom: 30px;
+        }
+        .status-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 24px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid #D4AF37;
+            background: transparent;
+            color: #FDFBF7;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn:hover { background: #D4AF37; color: #1A050A; }
+        .btn:disabled { opacity: 0.4; pointer-events: none; }
+        .btn-primary { background: #D4AF37; color: #1A050A; }
+        .btn-primary:hover { background: #C49A2E; }
+        .btn-danger { border-color: #7A1B2E; }
+        .btn-danger:hover { background: #7A1B2E; color: #FDFBF7; }
+        .status-msg {
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: rgba(253,251,247,0.5);
+            flex: 1;
+        }
+        .status-msg.ok { color: #6BCB77; }
+        .status-msg.err { color: #E74C3C; }
+        .section-group {
+            background: rgba(45,11,18,0.7);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .section-group h2 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: #D4AF37;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(212,175,55,0.15);
+        }
+        .field {
+            margin-bottom: 14px;
+        }
+        .field label {
+            display: block;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(253,251,247,0.4);
+            margin-bottom: 4px;
+        }
+        .field input, .field textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(26,5,10,0.6);
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 4px;
+            color: #FDFBF7;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            transition: border-color 0.3s;
+        }
+        .field input:focus, .field textarea:focus {
+            outline: none;
+            border-color: #D4AF37;
+        }
+        .field textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .field .key-hint {
+            font-size: 0.55rem;
+            color: rgba(253,251,247,0.2);
+            font-family: monospace;
+            margin-top: 2px;
+        }
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(253,251,247,0.4);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-wrap">
+        <h1>Settings</h1>
+        <p class="subtitle">Customize the text on your Roka Ceremony page</p>
+
+        <div class="status-bar">
+            <button class="btn btn-primary" id="save-btn">Save to Firestore</button>
+            <button class="btn btn-danger" id="reset-btn">Reset Defaults</button>
+            <span class="status-msg" id="status-msg">Initializing…</span>
+        </div>
+
+        <div id="form-container" class="loading">Loading index.html and Firestore data…</div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        var FIELDS = [];
+        var FORM = document.getElementById("form-container");
+        var STATUS = document.getElementById("status-msg");
+        var SAVE_BTN = document.getElementById("save-btn");
+        var RESET_BTN = document.getElementById("reset-btn");
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyCCDqa0H04Ji9taPjBnQV2UfIVNJvQf9lA",
+            authDomain: "roka-mv.firebaseapp.com",
+            projectId: "roka-mv",
+            storageBucket: "roka-mv.firebasestorage.app",
+            messagingSenderId: "1084491538421",
+            appId: "1:1084491538421:web:3dcc5f31380f275b520abc"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+        var OVERRIDES_REF = db.collection("settings").doc("textOverrides");
+
+        function setStatus(msg, ok) {
+            STATUS.textContent = msg;
+            STATUS.className = "status-msg" + (ok ? " ok" : " err");
+        }
+
+        function getTextContent(el) {
+            if (el.tagName === "INPUT") return el.getAttribute("placeholder") || "";
+            if (el.tagName === "META") return el.getAttribute("content") || "";
+            return (el.textContent || "").replace(/\s+/g, " ").trim();
+        }
+
+        function buildForm(savedOverrides) {
+            var html = "";
+
+            var sections = [
+                { label: "Loader &amp; Entry", keys: ["loader-title","loader-sub","enter-btn","hero-scroll"] },
+                { label: "Hero / Top", keys: ["hero-heading","hero-subtitle"] },
+                { label: "Couple Section", keys: ["couple-section-title","couple-heading","bride-name","bride-role","groom-name","groom-role"] },
+                { label: "Revelation / Scratch Card", keys: ["revelation-heading","scratch-label","scratch-date","scratch-event"] },
+                { label: "Blessings / Guestbook", keys: ["blessings-heading","guest-name-placeholder","guest-message-placeholder","submit-btn","load-more-btn"] },
+                { label: "Easter Egg Overlay", keys: ["easter-heading","easter-sub","easter-click"] },
+                { label: "Page Meta", keys: ["page-title","meta-description","og-title","og-description"] }
+            ];
+
+            // Apply saved overrides on top of defaults
+            if (savedOverrides && typeof savedOverrides === "object") {
+                FIELDS.forEach(function(f) {
+                    if (savedOverrides[f.key] != null) f.value = savedOverrides[f.key];
+                });
+            }
+
+            sections.forEach(function(section) {
+                var sectionFields = FIELDS.filter(function(f) {
+                    return section.keys.indexOf(f.key) !== -1;
+                });
+                if (!sectionFields.length) return;
+                html += '<div class="section-group"><h2>' + section.label + '</h2>';
+                sectionFields.forEach(function(f) {
+                    var isLong = f.value && f.value.length > 60;
+                    var tag = isLong ? "textarea" : "input";
+                    html += '<div class="field">';
+                    html += '<label for="f-' + f.key + '">' + f.label + '</label>';
+                    if (tag === "textarea") {
+                        html += '<textarea id="f-' + f.key + '" rows="3">' + escHtml(f.value) + '</textarea>';
+                    } else {
+                        html += '<input id="f-' + f.key + '" type="text" value="' + escAttr(f.value) + '">';
+                    }
+                    html += '<div class="key-hint">' + f.key + '</div>';
+                    html += '</div>';
+                });
+                html += '</div>';
+            });
+
+            FORM.innerHTML = html;
+            SAVE_BTN.disabled = false;
+            RESET_BTN.disabled = false;
+        }
+
+        function escHtml(s) {
+            return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        }
+        function escAttr(s) {
+            return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        }
+
+        function collectValues() {
+            var values = {};
+            FIELDS.forEach(function(f) {
+                var el = document.getElementById("f-" + f.key);
+                if (el) values[f.key] = el.value;
+            });
+            return values;
+        }
+
+        function saveOverrides() {
+            SAVE_BTN.disabled = true;
+            var values = collectValues();
+            OVERRIDES_REF.set(values)
+                .then(function() {
+                    setStatus("Saved " + Object.keys(values).length + " fields to Firestore ✓", true);
+                    SAVE_BTN.disabled = false;
+                })
+                .catch(function(err) {
+                    setStatus("Firestore save failed: " + err.message, false);
+                    SAVE_BTN.disabled = false;
+                });
+        }
+
+        function resetOverrides() {
+            if (!confirm("Reset all text to defaults from index.html?")) return;
+            RESET_BTN.disabled = true;
+            OVERRIDES_REF.delete()
+                .then(function() {
+                    // Reload from index.html without overrides
+                    loadFromIndex(null);
+                    setStatus("Reset to defaults — Firestore document deleted ✓", true);
+                    RESET_BTN.disabled = false;
+                })
+                .catch(function(err) {
+                    // Still reset the form even if Firestore delete fails
+                    loadFromIndex(null);
+                    setStatus("Reset locally (Firestore delete failed: " + err.message + ")", false);
+                    RESET_BTN.disabled = false;
+                });
+        }
+
+        function loadFromIndex(firestoreData) {
+            FORM.innerHTML = '<div class="loading">Loading index.html…</div>';
+            fetch("index.html")
+                .then(function(r) { return r.text(); })
+                .then(function(html) {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(html, "text/html");
+                    var els = doc.querySelectorAll("[data-text-key]");
+                    FIELDS = [];
+                    els.forEach(function(el) {
+                        var key = el.getAttribute("data-text-key");
+                        var val = getTextContent(el);
+                        var label = key.replace(/-/g, " ").replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+                        FIELDS.push({ key: key, value: val, label: label });
+                    });
+                    buildForm(firestoreData);
+                    setStatus("Loaded — " + FIELDS.length + " fields from index.html" + (firestoreData ? " + Firestore overrides" : ""), true);
+                })
+                .catch(function(err) {
+                    FORM.innerHTML = '<div class="loading" style="color:#E74C3C;">Error loading index.html: ' + err.message + '</div>';
+                    setStatus("Failed to load index.html", false);
+                });
+        }
+
+        // Load: fetch Firestore overrides + index.html defaults
+        OVERRIDES_REF.get()
+            .then(function(doc) {
+                var data = doc.exists ? doc.data() : null;
+                loadFromIndex(data);
+                if (data) {
+                    setStatus("Firestore overrides found — loading…", true);
+                }
+            })
+            .catch(function() {
+                loadFromIndex(null);
+                setStatus("Firestore unavailable — editing defaults only", false);
+            });
+
+        SAVE_BTN.addEventListener("click", saveOverrides);
+        RESET_BTN.addEventListener("click", resetOverrides);
+    </script>
+</body>
+</html>
