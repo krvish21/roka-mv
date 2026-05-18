@@ -2191,24 +2191,31 @@
 
             // Realtime Database presence
             var rtdb = firebase.database();
-            var sessionRef = rtdb.ref("presence/" + Math.random().toString(36).slice(2) + Date.now());
+            var sessionId = Math.random().toString(36).slice(2) + Date.now();
+            var sessionRef = rtdb.ref("presence/" + sessionId);
             var viewerText = document.getElementById("viewer-text");
 
-            // Register onDisconnect cleanup and set presence
-            sessionRef.onDisconnect().remove();
-            sessionRef.set({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
-
-            // Track aggregate online count
-            var presenceRef = rtdb.ref("presence");
-            presenceRef.on("value", function (snap) {
-                var count = snap.numChildren();
-                viewerText.textContent = count === 1 ? "you're here" : count + " viewing";
+            // Register onDisconnect first, then set value
+            sessionRef.onDisconnect().remove(function () {
+                sessionRef.set({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
             });
 
-            // Heartbeat every 20s to keep session alive
+            // Track active sessions (lastSeen within 45s)
+            var presenceRef = rtdb.ref("presence");
+            presenceRef.on("value", function (snap) {
+                var now = Date.now();
+                var active = 0;
+                snap.forEach(function (child) {
+                    var lastSeen = child.val().lastSeen || 0;
+                    if (now - lastSeen < 45000) active++;
+                });
+                viewerText.textContent = active <= 1 ? "you're here" : active + " viewing";
+            });
+
+            // Heartbeat every 15s to keep session alive
             var heartbeat = setInterval(function () {
                 sessionRef.set({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
-            }, 20000);
+            }, 15000);
 
             // 1. ENGINE LOADER LIFECYCLE
             document.getElementById("enter-experience-trigger").addEventListener("click", () => {
