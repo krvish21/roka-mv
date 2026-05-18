@@ -901,8 +901,6 @@
     <div id="canvas-container"></div>
     <div class="ambient-glow"></div>
 
-    <audio id="ambient-audio" loop src="music.mp3"></audio>
-
     <div id="loader-sequence">
         <div class="loader-mandala-container">
             <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -967,7 +965,10 @@
                 <div class="couple-grid">
                     <div class="couple-item">
                         <div class="couple-photo-wrap">
-                            <img class="couple-photo" src="images/manasvika.jpg" alt="Manasvika" loading="lazy">
+                            <picture>
+                                <source srcset="images/manasvika.webp" type="image/webp">
+                                <img class="couple-photo" src="images/manasvika-opt.jpg" alt="Manasvika" loading="lazy">
+                            </picture>
                         </div>
                         <span class="couple-name">Manasvika</span>
                         <span class="couple-role">The Bride</span>
@@ -975,7 +976,10 @@
                     <span class="couple-heart">♥</span>
                     <div class="couple-item">
                         <div class="couple-photo-wrap">
-                            <img class="couple-photo" src="images/vishwajeet.png" alt="Vishwajeet" loading="lazy">
+                            <picture>
+                                <source srcset="images/vishwajeet.webp" type="image/webp">
+                                <img class="couple-photo" src="images/vishwajeet.jpg" alt="Vishwajeet" loading="lazy">
+                            </picture>
                         </div>
                         <span class="couple-name">Vishwajeet</span>
                         <span class="couple-role">The Groom</span>
@@ -1117,7 +1121,11 @@
 
         // 1. ENGINE LOADER LIFECYCLE
         document.getElementById("enter-experience-trigger").addEventListener("click", () => {
-            audioNode = document.getElementById("ambient-audio");
+            audioNode = document.createElement("audio");
+            audioNode.id = "ambient-audio";
+            audioNode.loop = true;
+            audioNode.src = "music.mp3";
+            document.body.appendChild(audioNode);
             audioNode.play().catch(() => {});
             isPlaying = true;
             document.querySelector("#audio-toggle-node i").className = "fa-solid fa-volume-high";
