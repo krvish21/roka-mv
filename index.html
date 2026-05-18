@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Roka Ceremony | Manasvika & Vishwajeet</title>
+    <meta name="description" content="Join us in celebrating the Roka Ceremony of Manasvika & Vishwajeet on June 19, 2026.">
+    <meta property="og:title" content="The Roka Ceremony | Manasvika & Vishwajeet">
+    <meta property="og:description" content="With joy in our hearts, we invite you to witness the beginning of our forever — the Roka Ceremony.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://roka-mv.firebaseapp.com">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -457,13 +463,108 @@
             text-align: center;
         }
 
+        .loader-progress-wrap {
+            width: 220px;
+            height: 2px;
+            background: rgba(212, 175, 55, 0.15);
+            border-radius: 2px;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+
+        .loader-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--gold-gradient);
+            border-radius: 2px;
+            transition: width 0.4s ease;
+        }
+
+        .input-error {
+            border-color: var(--crimson) !important;
+            box-shadow: 0 0 12px rgba(122, 27, 46, 0.5);
+        }
+
+        .blessings-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .blessings-load-more {
+            padding: 10px 24px;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--gold-primary);
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .blessings-load-more:hover {
+            background: var(--glass-base);
+            border-color: var(--gold-primary);
+        }
+
+        #validation-msg {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: var(--crimson);
+            min-height: 1em;
+            transition: opacity 0.3s;
+        }
+
         @media (max-width: 768px) {
             .grand-heading {
-                font-size: 2.2rem;
+                font-size: 2rem;
             }
 
             .initial-trigger {
-                font-size: 3.5rem;
+                font-size: 3rem;
+            }
+
+            .romantic-prose {
+                font-size: 1.2rem;
+            }
+
+            .glass-card {
+                padding: 40px 20px;
+            }
+
+            .enter-btn {
+                padding: 14px 30px;
+                font-size: 0.7rem;
+            }
+
+            .control-circle {
+                width: 44px;
+                height: 44px;
+                font-size: 0.9rem;
+            }
+
+            .premium-controls {
+                bottom: 20px;
+                right: 20px;
+                gap: 12px;
+            }
+
+            .scratch-wrapper {
+                height: 180px;
+            }
+
+            #live-blessings-container {
+                max-height: 240px;
+            }
+
+            .cinematic-sub {
+                font-size: 0.7rem;
+                letter-spacing: 4px;
             }
         }
     </style>
@@ -492,6 +593,7 @@
             <h2 class="loader-title">Two Souls. One Destiny.</h2>
             <p class="loader-sub">A Celebration of Love Begins</p>
         </div>
+        <div class="loader-progress-wrap"><div class="loader-progress-bar" id="loader-progress-bar"></div></div>
         <button class="enter-btn" id="enter-experience-trigger">Step Into the Celebration</button>
     </div>
 
@@ -554,6 +656,10 @@
                     <button class="premium-btn" id="submit-blessing-trigger">Bless the Couple</button>
                 </div>
                 <div id="live-blessings-container"></div>
+                <div class="blessings-footer">
+                    <div id="validation-msg"></div>
+                    <button class="blessings-load-more" id="load-more-btn" style="display:none;">Load More Blessings</button>
+                </div>
             </div>
         </section>
     </main>
@@ -604,19 +710,51 @@
             }
         }
 
+        function updateProgress(pct) {
+            const bar = document.getElementById("loader-progress-bar");
+            if (bar) bar.style.width = pct + "%";
+        }
+
         // 1. ENGINE LOADER LIFECYCLE
         document.getElementById("enter-experience-trigger").addEventListener("click", () => {
             audioNode = document.getElementById("ambient-audio");
+            audioNode.play().catch(() => {});
+            isPlaying = true;
+            document.querySelector("#audio-toggle-node i").className = "fa-solid fa-volume-high";
+            updateProgress(15);
             gsap.to("#loader-sequence", {
                 opacity: 0,
-                duration: 1,
+                duration: 0.8,
                 onComplete: () => {
                     document.getElementById("loader-sequence").style.display = "none";
                     initThreeJsUniverse();
+                    updateProgress(50);
                     setupScratchCard();
+                    updateProgress(70);
+                    setTimeout(() => {
+                        updateProgress(100);
+                        setupScrollAnimations();
+                    }, 400);
                 }
             });
         });
+
+        // Scroll-triggered fade-in animations
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.querySelectorAll(".glass-card").forEach(card => {
+                            if (card.dataset.animated) return;
+                            card.dataset.animated = "true";
+                            gsap.from(card, { opacity: 0, y: 50, duration: 1, ease: "power2.out" });
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            document.querySelectorAll("section").forEach(s => observer.observe(s));
+        }
 
         // 2. AUDIO MANAGEMENT SYSTEM
         document.getElementById("audio-toggle-node").addEventListener("click", () => {
@@ -806,6 +944,9 @@
         const db = firebase.firestore();
         const blessingsContainer = document.getElementById("live-blessings-container");
         const submitBtn = document.getElementById("submit-blessing-trigger");
+        const loadMoreBtn = document.getElementById("load-more-btn");
+        const validationMsg = document.getElementById("validation-msg");
+        let blessUnsub = null;
 
         function renderBlessing(doc) {
             const data = doc.data();
@@ -819,54 +960,86 @@
             return el;
         }
 
-        let isFirstSnapshot = true;
-
-        db.collection("blessings")
-            .orderBy("timestamp", "desc")
-            .onSnapshot((snapshot) => {
-                if (snapshot.empty) {
-                    blessingsContainer.innerHTML = `<div style="font-family:var(--font-serif); font-style:italic; color:rgba(253,251,247,0.5);">Be the first to shower blessings!</div>`;
-                    return;
-                }
-                if (isFirstSnapshot) {
+        function startBlessingsListener(limit) {
+            if (blessUnsub) blessUnsub();
+            blessUnsub = db.collection("blessings")
+                .orderBy("timestamp", "desc")
+                .limit(limit)
+                .onSnapshot((snapshot) => {
+                    if (snapshot.empty) {
+                        blessingsContainer.innerHTML = `<div style="font-family:var(--font-serif); font-style:italic; color:rgba(253,251,247,0.5);">Be the first to bless the couple!</div>`;
+                        loadMoreBtn.style.display = "none";
+                        return;
+                    }
                     blessingsContainer.innerHTML = "";
                     snapshot.docs.forEach((doc) => {
                         blessingsContainer.appendChild(renderBlessing(doc));
                     });
-                    isFirstSnapshot = false;
-                } else {
-                    snapshot.docChanges().forEach((change) => {
-                        if (change.type === "added") {
-                            blessingsContainer.prepend(renderBlessing(change.doc));
-                        }
-                    });
-                }
-            }, (err) => {
-                console.error("Firestore listener error:", err);
-                blessingsContainer.innerHTML = `<div style="color:var(--crimson); font-size:0.9rem;">Unable to load blessings. Please check Firebase config.</div>`;
-            });
+                    loadMoreBtn.style.display = snapshot.docs.length >= limit && limit < 999 ? "block" : "none";
+                }, (err) => {
+                    console.error("Firestore error:", err);
+                    blessingsContainer.innerHTML = `<div style="color:var(--crimson); font-size:0.9rem;">Unable to load blessings. Please check connection.</div>`;
+                });
+        }
+
+        startBlessingsListener(20);
+
+        loadMoreBtn.addEventListener("click", () => {
+            loadMoreBtn.innerText = "Loading...";
+            startBlessingsListener(999);
+        });
+
+        function validateBlessing() {
+            const name = document.getElementById("guest-name");
+            const msg = document.getElementById("guest-message");
+            let valid = true;
+            name.classList.remove("input-error");
+            msg.classList.remove("input-error");
+            validationMsg.innerText = "";
+            if (!name.value.trim()) {
+                name.classList.add("input-error");
+                validationMsg.innerText = "Please enter your name";
+                valid = false;
+            }
+            if (!msg.value.trim()) {
+                msg.classList.add("input-error");
+                validationMsg.innerText = valid ? "Please write a blessing" : "Please fill in all fields";
+                valid = false;
+            }
+            return valid;
+        }
+
+        document.getElementById("guest-name").addEventListener("input", function () {
+            this.classList.remove("input-error");
+            if (document.getElementById("guest-message").value.trim() && this.value.trim()) validationMsg.innerText = "";
+        });
+        document.getElementById("guest-message").addEventListener("input", function () {
+            this.classList.remove("input-error");
+            if (document.getElementById("guest-name").value.trim() && this.value.trim()) validationMsg.innerText = "";
+        });
 
         submitBtn.addEventListener("click", () => {
+            if (!validateBlessing()) return;
             const name = document.getElementById("guest-name").value.trim();
             const msg = document.getElementById("guest-message").value.trim();
-            if (name && msg) {
-                submitBtn.disabled = true;
-                submitBtn.innerText = "Sending...";
-                db.collection("blessings").add({
-                    name: name,
-                    message: msg,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    document.getElementById("guest-name").value = "";
-                    document.getElementById("guest-message").value = "";
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = "Send Blessing";
-                }).catch((err) => {
-                    console.error("Error adding blessing:", err);
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = "Send Blessing";
-                });
-            }
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Sending...";
+            db.collection("blessings").add({
+                name: name,
+                message: msg,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                document.getElementById("guest-name").value = "";
+                document.getElementById("guest-message").value = "";
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Bless the Couple";
+                validationMsg.innerText = "";
+            }).catch((err) => {
+                console.error("Error:", err);
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Bless the Couple";
+                validationMsg.innerText = "Something went wrong. Try again.";
+            });
         });
 
         // Initials Easter Egg Dynamic Layer
