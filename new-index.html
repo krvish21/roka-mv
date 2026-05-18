@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Roka Ceremony | Manasvika & Vishwajeet</title>
+    <meta name="description" content="Join us in celebrating the Roka Ceremony of Manasvika & Vishwajeet on June 19, 2026.">
+    <meta property="og:title" content="The Roka Ceremony | Manasvika & Vishwajeet">
+    <meta property="og:description" content="With joy in our hearts, we invite you to witness the beginning of our forever.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg: #0f0806;
+            --bg-card: rgba(25, 15, 12, 0.75);
+            --gold: #c9a856;
+            --gold-light: #f0e2b5;
+            --crimson: #8a2a3a;
+            --ivory: #f5f0e8;
+            --border-gold: rgba(201, 168, 86, 0.2);
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-display: 'Playfair Display', serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            background: var(--bg);
+            color: var(--ivory);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        #canvas-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background: radial-gradient(ellipse at 50% 40%, transparent 0%, rgba(15, 8, 6, 0.6) 100%);
+            pointer-events: none;
+        }
+
+        /* LOADER */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            transition: opacity 0.8s ease;
+        }
+
+        #loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-mandala {
+            width: 120px;
+            height: 120px;
+            animation: spin 40s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-title {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-top: 36px;
+            font-weight: 400;
+        }
+
+        .loader-sub {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.1rem;
+            color: rgba(245, 240, 232, 0.6);
+            margin-top: 8px;
+        }
+
+        .loader-bar-wrap {
+            width: 200px;
+            height: 1px;
+            background: rgba(201, 168, 86, 0.15);
+            margin-top: 32px;
+            border-radius: 1px;
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--gold);
+            transition: width 0.4s ease;
+        }
+
+        .enter-btn {
+            margin-top: 36px;
+            padding: 14px 44px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold-light);
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .enter-btn:hover {
+            background: var(--gold);
+            color: var(--bg);
+        }
+
+        /* CONTROLS */
+        .controls {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 999;
+            display: flex;
+            gap: 12px;
+        }
+
+        .ctrl-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(201, 168, 86, 0.15);
+        }
+
+        /* SECTIONS */
+        main {
+            position: relative;
+            z-index: 2;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 12px;
+            padding: 64px 48px;
+            max-width: 720px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .card-frame {
+            position: absolute;
+            inset: 10px;
+            border: 1px solid rgba(201, 168, 86, 0.1);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .card::before,
+        .card::after {
+            content: "—";
+            position: absolute;
+            font-size: 0.7rem;
+            color: var(--gold);
+            opacity: 0.2;
+            letter-spacing: 4px;
+        }
+        .card::before {
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .card::after {
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-label {
+            font-family: var(--font-sans);
+            font-size: 0.6rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.5;
+            margin-bottom: 16px;
+        }
+
+        h1,
+        h2 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--gold-light);
+        }
+
+        h1 {
+            font-size: 3.2rem;
+        }
+        h2 {
+            font-size: 2.4rem;
+        }
+
+        .hero-sub {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-style: italic;
+            color: rgba(245, 240, 232, 0.8);
+            line-height: 1.6;
+        }
+
+        .initials {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .initial {
+            font-family: var(--font-display);
+            font-size: 4.5rem;
+            color: var(--gold);
+            cursor: pointer;
+            transition: transform 0.3s;
+            user-select: none;
+        }
+
+        .initial:hover {
+            transform: scale(1.1);
+        }
+
+        .initials-heart {
+            font-size: 1.6rem;
+            color: var(--crimson);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .scroll-hint {
+            font-family: var(--font-sans);
+            font-size: 0.55rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(245, 240, 232, 0.25);
+            margin-top: 48px;
+        }
+
+        /* SCRATCH CARD */
+        .scratch-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            height: 200px;
+            margin: 32px auto 0;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            background: radial-gradient(circle, #2a1612 0%, #0f0806 100%);
+            overflow: hidden;
+        }
+
+        .scratch-reveal {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            pointer-events: none;
+            padding: 20px;
+        }
+
+        .scratch-reveal .label {
+            font-family: var(--font-sans);
+            font-size: 0.55rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.6;
+            margin-bottom: 6px;
+        }
+
+        .scratch-reveal .date {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--ivory);
+            margin-bottom: 4px;
+        }
+
+        .scratch-reveal .event {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--gold);
+        }
+
+        #scratch-canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            touch-action: none;
+            cursor: pointer;
+        }
+
+        /* BLESSINGS */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 460px;
+            margin: 24px auto 0;
+        }
+
+        .form-group input {
+            background: rgba(15, 8, 6, 0.5);
+            border: 1px solid var(--border-gold);
+            padding: 14px 16px;
+            color: var(--ivory);
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            outline: none;
+            border-radius: 6px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--gold);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(245, 240, 232, 0.3);
+        }
+
+        .form-group .error {
+            border-color: var(--crimson);
+        }
+
+        .submit-btn {
+            padding: 14px;
+            background: var(--gold);
+            color: var(--bg);
+            border: none;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: opacity 0.3s;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        #validation-msg {
+            font-size: 0.65rem;
+            color: var(--crimson);
+            min-height: 1em;
+            text-align: left;
+        }
+
+        #blessings-list {
+            margin-top: 24px;
+            max-height: 280px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #blessings-list::-webkit-scrollbar {
+            width: 3px;
+        }
+        #blessings-list::-webkit-scrollbar-track {
+            background: rgba(15, 8, 6, 0.3);
+        }
+        #blessings-list::-webkit-scrollbar-thumb {
+            background: var(--gold);
+        }
+
+        .blessing {
+            background: rgba(15, 8, 6, 0.4);
+            border: 1px solid var(--border-gold);
+            border-radius: 6px;
+            padding: 14px 16px;
+            text-align: left;
+            animation: fadeUp 0.4s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .blessing .msg {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--ivory);
+            margin-bottom: 4px;
+        }
+
+        .blessing .name {
+            font-family: var(--font-sans);
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .blessings-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .load-more {
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .load-more:hover {
+            background: rgba(201, 168, 86, 0.1);
+        }
+
+        /* EASTER EGG */
+        #easter-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 20000;
+            background: rgba(15, 8, 6, 0.96);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+        }
+
+        #easter-overlay h2 {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        #easter-overlay p {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--ivory);
+        }
+
+        #easter-overlay .close-hint {
+            font-family: var(--font-sans);
+            font-size: 0.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(245, 240, 232, 0.3);
+            margin-top: 40px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            .initial {
+                font-size: 3.2rem;
+            }
+            .card {
+                padding: 40px 24px;
+            }
+            .hero-sub {
+                font-size: 1.1rem;
+            }
+            .scratch-wrap {
+                height: 170px;
+            }
+            .scratch-reveal .date {
+                font-size: 1.6rem;
+            }
+            .controls {
+                bottom: 20px;
+                right: 20px;
+            }
+            .ctrl-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="canvas-container"></div>
+    <div class="overlay"></div>
+
+    <audio id="bg-audio" loop src="music.mp3"></audio>
+
+    <!-- LOADER -->
+    <div id="loader">
+        <svg class="loader-mandala" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#c9a856" stroke-width="0.8" stroke-dasharray="3,3" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#8a2a3a" stroke-width="0.6" />
+            <path d="M50 8 L92 50 L50 92 L8 50 Z" fill="none" stroke="#c9a856" stroke-width="0.4" />
+            <circle cx="50" cy="50" r="28" fill="none" stroke="#c9a856" stroke-width="0.8" stroke-dasharray="1,2" />
+            <circle cx="50" cy="50" r="18" fill="none" stroke="#8a2a3a" stroke-width="0.8" />
+            <circle cx="50" cy="50" r="5" fill="#c9a856" />
+        </svg>
+        <h1 class="loader-title">Manasvika & Vishwajeet</h1>
+        <p class="loader-sub">The Roka Ceremony</p>
+        <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+        <button class="enter-btn" id="enter-btn">Open Invitation</button>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+        <div class="ctrl-btn" id="audio-toggle" title="Toggle Music">
+            <i class="fa-solid fa-volume-xmark"></i>
+        </div>
+    </div>
+
+    <main>
+        <!-- HERO -->
+        <section id="hero">
+            <div class="card" style="background:transparent;backdrop-filter:none;border:none;">
+                <div class="initials">
+                    <span class="initial" id="init-m">M</span>
+                    <i class="fa-solid fa-heart initials-heart" id="heart-egg"></i>
+                    <span class="initial" id="init-v">V</span>
+                </div>
+                <h1>Manasvika & Vishwajeet</h1>
+                <p class="hero-sub">With joy in our hearts, we invite you to witness the beginning of our forever&nbsp;— the Roka Ceremony</p>
+                <p class="scroll-hint">Scroll to explore</p>
+            </div>
+        </section>
+
+        <!-- REVELATION -->
+        <section id="reveal">
+            <div class="card">
+                <div class="card-frame"></div>
+                <p class="section-label">The Auspicious Date</p>
+                <h2>Discover When We Begin</h2>
+                <p class="hero-sub" style="font-size:1rem;margin-bottom:8px;">Scratch the golden veil to reveal</p>
+                <div class="scratch-wrap">
+                    <div class="scratch-reveal">
+                        <p class="label">Mark Your Calendar</p>
+                        <p class="date">19th June 2026</p>
+                        <p class="event">The Roka Ceremony</p>
+                    </div>
+                    <canvas id="scratch-canvas"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLESSINGS -->
+        <section id="blessings">
+            <div class="card">
+                <div class="card-frame"></div>
+                <p class="section-label">Guestbook</p>
+                <h2>Share Your Blessings</h2>
+                <div class="form-group">
+                    <input type="text" id="guest-name" placeholder="Your name">
+                    <input type="text" id="guest-msg" placeholder="A wish for the couple">
+                    <div id="validation-msg"></div>
+                    <button class="submit-btn" id="submit-btn">Bless the Couple</button>
+                </div>
+                <div id="blessings-list"></div>
+                <div class="blessings-footer">
+                    <button class="load-more" id="load-more" style="display:none;">Load More</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- EASTER EGG -->
+    <div id="easter-overlay">
+        <h2>A Love Story Written in the Stars</h2>
+        <p>Vishwajeet ❤️ Manasvika</p>
+        <p class="close-hint">Click anywhere to return</p>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ─── STATE ───
+        let scene, camera, renderer, stars, petals = [],
+            burst = [];
+        let audio, playing = false;
+        let seqM = false;
+
+        // ─── THREE.JS ───
+        function initScene() {
+            const c = document.getElementById("canvas-container");
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
+            camera.position.z = 28;
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(innerWidth, innerHeight);
+            c.appendChild(renderer.domElement);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+
+            // Stars
+            const g = new THREE.BufferGeometry();
+            const p = new Float32Array(180 * 3);
+            for (let i = 0; i < 180 * 3; i++) p[i] = (Math.random() - 0.5) * 60;
+            g.setAttribute('position', new THREE.BufferAttribute(p, 3));
+            stars = new THREE.Points(g, new THREE.PointsMaterial({ color: 0xc9a856, size: 0.25, transparent: true, opacity: 0.5 }));
+            scene.add(stars);
+
+            // Petals (flat ovals)
+            const pg = new THREE.CircleGeometry(0.3, 6);
+            for (let i = 0; i < 20; i++) {
+                const m = new THREE.Mesh(pg, new THREE.MeshBasicMaterial({
+                    color: new THREE.Color().setHSL(0.94 + Math.random() * 0.06, 0.3, 0.1 + Math.random() * 0.12),
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.7
+                }));
+                m.position.set((Math.random() - 0.5) * 48, (Math.random() - 0.5) * 48, (Math.random() - 0.5) * 18);
+                const s = 0.5 + Math.random() * 0.5;
+                m.scale.set(s, s * (1.3 + Math.random() * 0.5), s);
+                m.rotation.z = Math.random() * Math.PI * 2;
+                m.userData = { speed: 0.006 + Math.random() * 0.015, rz: (Math.random() - 0.5) * 0.012 };
+                scene.add(m);
+                petals.push(m);
+            }
+
+            // Floating rings
+            const rg = new THREE.TorusGeometry(0.25, 0.05, 8, 18);
+            for (let i = 0; i < 6; i++) {
+                const m = new THREE.Mesh(rg, new THREE.MeshBasicMaterial({
+                    color: new THREE.Color().setHSL(0.1, 0.4 + Math.random() * 0.3, 0.5 + Math.random() * 0.2),
+                    transparent: true,
+                    opacity: 0.2
+                }));
+                m.position.set((Math.random() - 0.5) * 40, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 15);
+                m.rotation.x = Math.random() * Math.PI;
+                m.rotation.y = Math.random() * Math.PI;
+                const s = 0.5 + Math.random() * 0.7;
+                m.scale.set(s, s, s);
+                m.userData = { speed: 0.003 + Math.random() * 0.006, rx: (Math.random() - 0.5) * 0.012, ry: (Math.random() - 0.5) * 0.012 };
+                scene.add(m);
+                petals.push(m);
+            }
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            stars.rotation.y += 0.0008;
+            petals.forEach(p => {
+                p.position.y -= p.userData.speed;
+                p.rotation.x += 0.005;
+                p.rotation.z += p.userData.rz || 0;
+                if (p.userData.rx) p.rotation.x += p.userData.rx;
+                if (p.userData.ry) p.rotation.y += p.userData.ry;
+                if (p.position.y < -25) p.position.y = 25;
+            });
+            for (let i = burst.length - 1; i >= 0; i--) {
+                const b = burst[i];
+                b.position.x += b.userData.vx;
+                b.position.y += b.userData.vy;
+                b.position.z += b.userData.vz;
+                b.userData.vy -= 0.0012;
+                b.rotation.x += b.userData.rx;
+                b.rotation.z += b.userData.rz;
+                b.userData.life -= b.userData.dc;
+                b.material.opacity = Math.max(0, b.userData.life);
+                if (b.userData.life <= 0) {
+                    scene.remove(b);
+                    b.material.dispose();
+                    b.geometry.dispose();
+                    burst.splice(i, 1);
+                }
+            }
+            renderer.render(scene, camera);
+        }
+
+        function burstPetal(n = 30, c = 0xc9a856, cx = 0, cy = 0, cz = 5) {
+            const g = new THREE.CircleGeometry(0.22, 6);
+            for (let i = 0; i < n; i++) {
+                const col = c === 0x8a2a3a
+                    ? new THREE.Color().setHSL(0.94 + Math.random() * 0.06, 0.3, 0.1 + Math.random() * 0.1)
+                    : new THREE.Color().setHSL(0.1, 0.4 + Math.random() * 0.3, 0.5 + Math.random() * 0.25);
+                const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: col, side: THREE.DoubleSide, transparent: true, opacity: 0.85 }));
+                m.position.set(cx, cy, cz);
+                const s = 0.4 + Math.random() * 0.4;
+                m.scale.set(s, s * (1.2 + Math.random() * 0.5), s);
+                m.rotation.z = Math.random() * Math.PI * 2;
+                const a = Math.random() * Math.PI * 2;
+                const sp = 0.03 + Math.random() * 0.1;
+                m.userData = { vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 0.025, vz: (Math.random() - 0.5) * 0.04, life: 1, dc: 0.003 + Math.random() * 0.004, rx: (Math.random() - 0.5) * 0.035, rz: (Math.random() - 0.5) * 0.025 };
+                scene.add(m);
+                burst.push(m);
+            }
+        }
+
+        function shower() {
+            for (let i = 0; i < 5; i++) {
+                burstPetal(18, 0xc9a856, (Math.random() - 0.5) * 28, -14, 4 + Math.random() * 4);
+                burstPetal(12, 0x8a2a3a, (Math.random() - 0.5) * 28, -12, 3 + Math.random() * 3);
+                burstPetal(8, 0xf0e2b5, (Math.random() - 0.5) * 28, -10, 4 + Math.random() * 3);
+            }
+        }
+
+        function updBar(pct) {
+            const b = document.getElementById("loader-bar");
+            if (b) b.style.width = pct + "%";
+        }
+
+        // ─── LOADER ───
+        document.getElementById("enter-btn").addEventListener("click", () => {
+            audio = document.getElementById("bg-audio");
+            audio.play().catch(() => {});
+            playing = true;
+            document.querySelector("#audio-toggle i").className = "fa-solid fa-volume-high";
+            updBar(20);
+            document.getElementById("loader").classList.add("hidden");
+            setTimeout(() => {
+                document.getElementById("loader").style.display = "none";
+                initScene();
+                updBar(60);
+                setupScratch();
+                updBar(80);
+                setTimeout(() => {
+                    updBar(100);
+                    setupScrollFX();
+                }, 300);
+            }, 600);
+        });
+
+        // ─── AUDIO ───
+        document.getElementById("audio-toggle").addEventListener("click", () => {
+            const i = document.querySelector("#audio-toggle i");
+            if (!playing) {
+                audio.play().catch(() => {});
+                i.className = "fa-solid fa-volume-high";
+                playing = true;
+            } else {
+                audio.pause();
+                i.className = "fa-solid fa-volume-xmark";
+                playing = false;
+            }
+        });
+
+        // ─── SCROLL FX ───
+        function setupScrollFX() {
+            const o = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.querySelectorAll(".card").forEach(c => {
+                            if (c.dataset.anim) return;
+                            c.dataset.anim = "1";
+                            gsap.from(c, { opacity: 0, y: 40, scale: 0.98, duration: 1.2, ease: "power4.out" });
+                        });
+                        o.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            document.querySelectorAll("section").forEach(s => o.observe(s));
+        }
+
+        // ─── SCRATCH ───
+        function setupScratch() {
+            const c = document.getElementById('scratch-canvas');
+            const w = c.parentElement;
+            const ctx = c.getContext('2d');
+            c.width = w.clientWidth || 420;
+            c.height = w.clientHeight || 200;
+            ctx.fillStyle = '#b8973a';
+            ctx.fillRect(0, 0, c.width, c.height);
+            ctx.font = '10px Montserrat';
+            ctx.fillStyle = '#1a0e0a';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('SCRATCH TO REVEAL', c.width / 2, c.height / 2);
+            let paint = false,
+                revealed = false;
+
+            function pct() {
+                const d = ctx.getImageData(4, 4, c.width - 8, c.height - 8);
+                const px = d.data;
+                let cl = 0,
+                    t = 0;
+                for (let i = 3; i < px.length; i += 4) { t++; if (px[i] === 0) cl++; }
+                return cl / t;
+            }
+
+            function check() {
+                if (revealed) return;
+                if (pct() > 0.45) {
+                    revealed = true;
+                    burstPetal(40, 0xc9a856, 0, 0, 5);
+                    burstPetal(30, 0x8a2a3a, -2, 2, 3);
+                    burstPetal(30, 0xf0e2b5, 2, -1, 4);
+                    shower();
+                }
+            }
+
+            function scratch(e) {
+                if (!paint) return;
+                const r = c.getBoundingClientRect();
+                const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+                const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, 24, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            c.addEventListener('mousedown', () => paint = true);
+            c.addEventListener('touchstart', () => paint = true);
+            c.addEventListener('mousemove', scratch);
+            c.addEventListener('touchmove', e => { scratch(e);
+                e.preventDefault(); }, { passive: false });
+            window.addEventListener('mouseup', () => { paint = false;
+                check(); });
+            window.addEventListener('touchend', () => { paint = false;
+                check(); });
+        }
+
+        // ─── EASTER EGGS ───
+        document.getElementById("init-m").addEventListener("click", () => {
+            burstPetal(20, 0x8a2a3a, -2, 0, 5);
+            burstPetal(16, 0xc9a856, 0, 2, 4);
+            seqM = true;
+            setTimeout(() => { seqM = false; }, 3000);
+        });
+        document.getElementById("init-v").addEventListener("click", () => {
+            if (seqM) {
+                seqM = false;
+                burstPetal(50, 0xc9a856, 0, 0, 6);
+                burstPetal(40, 0x8a2a3a, -3, 3, 4);
+                burstPetal(40, 0xf0e2b5, 3, -3, 4);
+                shower();
+            } else {
+                burstPetal(24, 0xc9a856, 2, 0, 5);
+                burstPetal(12, 0xf0e2b5, 0, -2, 4);
+            }
+        });
+        document.getElementById("heart-egg").addEventListener("click", () => {
+            document.getElementById("easter-overlay").style.display = "flex";
+        });
+        document.getElementById("easter-overlay").addEventListener("click", () => {
+            document.getElementById("easter-overlay").style.display = "none";
+        });
+
+        // ─── FIREBASE BLESSINGS ───
+        const fbConfig = {
+            apiKey: "AIzaSyCCDqa0H04Ji9taPjBnQV2UfIVNJvQf9lA",
+            authDomain: "roka-mv.firebaseapp.com",
+            projectId: "roka-mv",
+            storageBucket: "roka-mv.firebasestorage.app",
+            messagingSenderId: "1084491538421",
+            appId: "1:1084491538421:web:3dcc5f31380f275b520abc"
+        };
+        firebase.initializeApp(fbConfig);
+        const db = firebase.firestore();
+        const list = document.getElementById("blessings-list");
+        const subBtn = document.getElementById("submit-btn");
+        const loadBtn = document.getElementById("load-more");
+        const vMsg = document.getElementById("validation-msg");
+        let unsub = null;
+
+        function render(doc) {
+            const d = doc.data();
+            const el = document.createElement("div");
+            el.className = "blessing";
+            el.innerHTML = `<div class="msg">"${d.message}"</div><div class="name">— ${d.name}</div>`;
+            return el;
+        }
+
+        function startListener(limit) {
+            if (unsub) unsub();
+            unsub = db.collection("blessings").orderBy("timestamp", "desc").limit(limit).onSnapshot(snap => {
+                if (snap.empty) {
+                    list.innerHTML = '<div style="font-family:var(--font-serif);font-style:italic;color:rgba(245,240,232,0.4);font-size:0.9rem;">Be the first to bless the couple!</div>';
+                    loadBtn.style.display = "none";
+                    return;
+                }
+                list.innerHTML = "";
+                snap.docs.forEach(d => list.appendChild(render(d)));
+                loadBtn.style.display = snap.docs.length >= limit && limit < 999 ? "block" : "none";
+            }, () => {
+                list.innerHTML = '<div style="color:var(--crimson);font-size:0.8rem;">Could not load blessings.</div>';
+            });
+        }
+        startListener(20);
+        loadBtn.addEventListener("click", () => { loadBtn.innerText = "Loading...";
+            startListener(999); });
+
+        function validate() {
+            const n = document.getElementById("guest-name");
+            const m = document.getElementById("guest-msg");
+            let ok = true;
+            n.classList.remove("error");
+            m.classList.remove("error");
+            vMsg.textContent = "";
+            if (!n.value.trim()) { n.classList.add("error");
+                vMsg.textContent = "Enter your name";
+                ok = false; }
+            if (!m.value.trim()) { m.classList.add("error");
+                vMsg.textContent = ok ? "Write a blessing" : "Fill in all fields";
+                ok = false; }
+            return ok;
+        }
+        ["guest-name", "guest-msg"].forEach(id => {
+            document.getElementById(id).addEventListener("input", function() {
+                this.classList.remove("error");
+                if (document.getElementById("guest-name").value.trim() && document.getElementById("guest-msg").value.trim())
+                    vMsg.textContent = "";
+            });
+        });
+
+        subBtn.addEventListener("click", () => {
+            if (!validate()) return;
+            const n = document.getElementById("guest-name").value.trim();
+            const m = document.getElementById("guest-msg").value.trim();
+            subBtn.disabled = true;
+            subBtn.textContent = "Sending...";
+            db.collection("blessings").add({ name: n, message: m, timestamp: firebase.firestore.FieldValue.serverTimestamp() })
+                .then(() => {
+                    document.getElementById("guest-name").value = "";
+                    document.getElementById("guest-msg").value = "";
+                    subBtn.disabled = false;
+                    subBtn.textContent = "Bless the Couple";
+                    vMsg.textContent = "";
+                }).catch(() => {
+                    subBtn.disabled = false;
+                    subBtn.textContent = "Bless the Couple";
+                    vMsg.textContent = "Something went wrong.";
+                });
+        });
+    </script>
+</body>
+
+</html>
