@@ -254,12 +254,25 @@
             cursor: pointer;
             transition: all 0.4s ease;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+            animation: enterPulse 2.6s ease-in-out infinite;
         }
 
         .enter-btn:hover {
             background: var(--gold-primary);
             color: var(--bg-dark-maroon);
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+            animation: none;
+        }
+
+        @keyframes enterPulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+                border-color: rgba(212, 175, 55, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 35px rgba(212, 175, 55, 0.25), 0 0 60px rgba(212, 175, 55, 0.08);
+                border-color: rgba(212, 175, 55, 0.8);
+            }
         }
 
         .premium-controls {
