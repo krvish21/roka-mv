@@ -518,6 +518,89 @@
             transition: transform 0.3s;
         }
 
+        /* COUPLE SECTION */
+        .couple-grid {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .couple-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            flex: 0 1 240px;
+        }
+
+        .couple-photo-wrap {
+            position: relative;
+            width: 220px;
+            height: 280px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 3px rgba(212, 175, 55, 0.2),
+                0 0 0 6px rgba(45, 11, 18, 0.8),
+                0 0 0 9px rgba(212, 175, 55, 0.15),
+                0 15px 40px rgba(0, 0, 0, 0.6);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .couple-photo-wrap:hover {
+            transform: scale(1.04);
+            box-shadow:
+                0 0 0 3px rgba(212, 175, 55, 0.35),
+                0 0 0 6px rgba(45, 11, 18, 0.8),
+                0 0 0 9px rgba(212, 175, 55, 0.25),
+                0 0 35px rgba(212, 175, 55, 0.15),
+                0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .couple-photo-wrap::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(180deg, transparent 50%, rgba(26, 5, 10, 0.4) 100%);
+            pointer-events: none;
+        }
+
+        .couple-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .couple-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .couple-role {
+            font-family: var(--font-sans);
+            font-size: 0.55rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(253, 251, 247, 0.35);
+            margin-top: -10px;
+        }
+
+        .couple-heart {
+            font-size: 2rem;
+            color: var(--crimson);
+            opacity: 0.6;
+            text-shadow: 0 0 30px rgba(122, 27, 46, 0.4);
+            flex-shrink: 0;
+        }
+
         /* SCRATCH CARD DESIGN */
         .scratch-wrapper {
             position: relative;
@@ -796,6 +879,18 @@
                 font-size: 0.7rem;
                 letter-spacing: 4px;
             }
+
+            .couple-grid {
+                flex-direction: column;
+                gap: 24px;
+            }
+            .couple-photo-wrap {
+                width: 170px;
+                height: 215px;
+            }
+            .couple-heart {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -848,6 +943,44 @@
 
                 <p class="cinematic-sub" style="margin-top:40px; font-size:0.7rem; color: rgba(253,251,247,0.4);">Scroll
                     to explore</p>
+            </div>
+        </section>
+
+        <section id="couple">
+            <div class="glass-card">
+                <div class="card-frame"></div>
+                <div class="card-corner card-corner--tr"></div>
+                <div class="card-corner card-corner--bl"></div>
+                <div class="card-glow"></div>
+                <div class="card-band"><span class="card-band-ornament">◈</span></div>
+                <div class="card-dust">
+                    <div class="dust-particle"></div>
+                    <div class="dust-particle"></div>
+                    <div class="dust-particle"></div>
+                    <div class="dust-particle"></div>
+                    <div class="dust-particle"></div>
+                    <div class="dust-particle"></div>
+                </div>
+                <p class="cinematic-sub">Meet the Couple</p>
+                <h2 class="grand-heading" style="font-size:2.2rem;">The Bride &amp; Groom</h2>
+                <div class="card-separator">◈</div>
+                <div class="couple-grid">
+                    <div class="couple-item">
+                        <div class="couple-photo-wrap">
+                            <img class="couple-photo" src="images/manasvika.jpg" alt="Manasvika" loading="lazy">
+                        </div>
+                        <span class="couple-name">Manasvika</span>
+                        <span class="couple-role">The Bride</span>
+                    </div>
+                    <span class="couple-heart">♥</span>
+                    <div class="couple-item">
+                        <div class="couple-photo-wrap">
+                            <img class="couple-photo" src="images/vishwajeet.png" alt="Vishwajeet" loading="lazy">
+                        </div>
+                        <span class="couple-name">Vishwajeet</span>
+                        <span class="couple-role">The Groom</span>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -933,6 +1066,11 @@
         let scene, camera, renderer, starParticles, flowerPetals = [];
         let audioNode, isPlaying = false;
         const burstParticles = [];
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener("mousemove", (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+        });
 
         function triggerFlowerBurst(count = 40, color = 0xD4AF37, cx = 0, cy = 0, cz = 5) {
             const geo = new THREE.CircleGeometry(0.28, 6);
@@ -1120,14 +1258,18 @@
 
             function frameLoop() {
                 requestAnimationFrame(frameLoop);
-                starParticles.rotation.y += 0.001;
+                starParticles.rotation.y += 0.001 + mouseX * 0.0003;
+                starParticles.rotation.x += mouseY * 0.00015;
                 flowerPetals.forEach(p => {
                     p.position.y -= p.userData.speed;
-                    p.rotation.x += 0.006;
-                    p.rotation.z += p.userData.rotZ || 0;
+                    p.position.x += mouseX * 0.008;
+                    p.rotation.x += 0.006 + mouseY * 0.002;
+                    p.rotation.z += (p.userData.rotZ || 0) + mouseX * 0.001;
                     if (p.userData.rotX) p.rotation.x += p.userData.rotX;
                     if (p.userData.rotY) p.rotation.y += p.userData.rotY;
                     if (p.position.y < -25) p.position.y = 25;
+                    if (p.position.x > 28) p.position.x = -28;
+                    if (p.position.x < -28) p.position.x = 28;
                 });
                 for (let i = burstParticles.length - 1; i >= 0; i--) {
                     const p = burstParticles[i];
@@ -1348,6 +1490,8 @@
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Bless the Couple";
                 validationMsg.innerText = "";
+                triggerFlowerBurst(30, 0xD4AF37, (Math.random() - 0.5) * 4, 0, 6);
+                triggerFlowerBurst(20, 0xFBF5B7, (Math.random() - 0.5) * 4, -2, 5);
             }).catch((err) => {
                 console.error("Error:", err);
                 submitBtn.disabled = false;
