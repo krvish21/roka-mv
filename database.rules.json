@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "presence": {
+      ".read": true,
+      ".write": true,
+      "$uid": {
+        ".validate": "newData.hasChildren(['lastSeen'])"
+      }
+    }
+  }
+}

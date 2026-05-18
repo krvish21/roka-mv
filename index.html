@@ -489,6 +489,34 @@
             animation: ringPulse 3s ease-in-out infinite;
         }
 
+        .viewer-count {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-family: var(--font-serif);
+            font-size: 0.75rem;
+            color: rgba(253, 251, 247, 0.5);
+            letter-spacing: 1px;
+            z-index: 999;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .viewer-count .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
         @keyframes ringPulse {
 
             0%,
@@ -1862,6 +1890,11 @@
         <div class="float-up-ring"></div>↑
     </button>
 
+    <div class="viewer-count" id="viewer-indicator">
+        <span class="dot"></span>
+        <span id="viewer-text">checking...</span>
+    </div>
+
     <main>
         <section id="hero">
             <div class="hero-card">
@@ -2049,12 +2082,14 @@
 
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <script>
         var firebaseConfig = {
             apiKey: "AIzaSyCCDqa0H04Ji9taPjBnQV2UfIVNJvQf9lA",
             authDomain: "roka-mv.firebaseapp.com",
+            databaseURL: "https://roka-mv-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "roka-mv",
             storageBucket: "roka-mv.firebasestorage.app",
             messagingSenderId: "1084491538421",
@@ -2153,6 +2188,27 @@
 
             // EmailJS init
             emailjs.init("-ukhPWMlckZidPP0w");
+
+            // Realtime Database presence
+            var rtdb = firebase.database();
+            var sessionRef = rtdb.ref("presence/" + Math.random().toString(36).slice(2) + Date.now());
+            var viewerText = document.getElementById("viewer-text");
+
+            // Register onDisconnect cleanup and set presence
+            sessionRef.onDisconnect().remove();
+            sessionRef.set({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
+
+            // Track aggregate online count
+            var presenceRef = rtdb.ref("presence");
+            presenceRef.on("value", function (snap) {
+                var count = snap.numChildren();
+                viewerText.textContent = count === 1 ? "you're here" : count + " viewing";
+            });
+
+            // Heartbeat every 20s to keep session alive
+            var heartbeat = setInterval(function () {
+                sessionRef.set({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
+            }, 20000);
 
             // 1. ENGINE LOADER LIFECYCLE
             document.getElementById("enter-experience-trigger").addEventListener("click", () => {
