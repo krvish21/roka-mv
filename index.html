@@ -218,6 +218,88 @@
                 box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.04);
             }
             50% {
+                border-color: rgba(212, 175, 55, 0.45);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 45px rgba(212, 175, 55, 0.15), 0 0 80px rgba(122, 27, 46, 0.04);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                opacity: 0.45;
+                transform: translate(-50%, -50%) scale(1.08);
+            }
+        }
+
+        @keyframes dustFloat1 {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.6;
+                transform: translate(8px, -12px) scale(1.1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translate(12px, -28px) scale(0.9);
+            }
+            100% {
+                transform: translate(25px, -50px) scale(0.3);
+                opacity: 0;
+            }
+        }
+        @keyframes dustFloat2 {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.5;
+                transform: translate(-10px, -15px) scale(1.15);
+            }
+            50% {
+                opacity: 0.4;
+                transform: translate(-18px, -30px) scale(0.85);
+            }
+            100% {
+                transform: translate(-30px, -55px) scale(0.3);
+                opacity: 0;
+            }
+        }
+        @keyframes dustFloat3 {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.5;
+                transform: translate(15px, -8px) scale(1.2);
+            }
+            50% {
+                opacity: 0.4;
+                transform: translate(22px, -24px) scale(0.8);
+            }
+            100% {
+                transform: translate(35px, -45px) scale(0.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes cardShimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes cardBreath {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.005); }
+        }
+            50% {
                 border-color: rgba(212, 175, 55, 0.4);
                 box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 35px rgba(212, 175, 55, 0.12);
             }
@@ -287,124 +369,199 @@
         .glass-card {
             background: var(--glass-base);
             background-image:
-                radial-gradient(circle at 25% 20%, rgba(212, 175, 55, 0.04) 0%, transparent 35%),
-                radial-gradient(circle at 75% 80%, rgba(212, 175, 55, 0.04) 0%, transparent 35%),
-                radial-gradient(circle at 50% 50%, rgba(122, 27, 46, 0.06) 0%, transparent 50%);
+                radial-gradient(circle at 25% 15%, rgba(212, 175, 55, 0.07) 0%, transparent 40%),
+                radial-gradient(circle at 75% 85%, rgba(212, 175, 55, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(122, 27, 46, 0.08) 0%, transparent 50%);
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 8px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 12px;
             padding: 60px 40px;
             max-width: 800px;
             width: 100%;
             text-align: center;
             position: relative;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            animation: borderShimmer 4s ease-in-out infinite;
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(212, 175, 55, 0.08),
+                inset 0 -1px 0 rgba(212, 175, 55, 0.04);
+            animation: borderShimmer 5s ease-in-out infinite, cardBreath 8s ease-in-out infinite;
+            transition: box-shadow 0.6s ease, border-color 0.6s ease;
         }
 
         .glass-card::before {
-            content: "✿";
+            content: "❧";
             position: absolute;
-            top: 8px;
-            left: 10px;
-            font-size: 1rem;
+            top: 6px;
+            left: 14px;
+            font-size: 1.1rem;
             color: var(--gold-primary);
-            opacity: 0.2;
+            opacity: 0.15;
             pointer-events: none;
+            font-family: var(--font-serif);
         }
 
         .glass-card::after {
-            content: "✿";
+            content: "❧";
             position: absolute;
-            bottom: 8px;
-            right: 10px;
-            font-size: 1rem;
+            bottom: 6px;
+            right: 14px;
+            font-size: 1.1rem;
             color: var(--gold-primary);
-            opacity: 0.2;
+            opacity: 0.15;
             pointer-events: none;
+            font-family: var(--font-serif);
+        }
+
+        .glass-card:hover {
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.55),
+                0 0 40px rgba(212, 175, 55, 0.06),
+                inset 0 1px 0 rgba(212, 175, 55, 0.1),
+                inset 0 -1px 0 rgba(212, 175, 55, 0.06);
+            border-color: rgba(212, 175, 55, 0.4);
         }
 
         .card-corner {
             position: absolute;
-            width: 24px;
-            height: 24px;
+            width: 40px;
+            height: 40px;
             pointer-events: none;
         }
-
-        .card-corner--tr::before {
-            content: "✿";
-            font-size: 1rem;
-            color: var(--gold-primary);
-            opacity: 0.2;
-            pointer-events: none;
+        .card-corner::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: rgba(212, 175, 55, 0.18);
+            border-style: solid;
         }
         .card-corner--tr {
             top: 8px;
-            right: 10px;
+            right: 8px;
         }
-
-        .card-corner--bl::before {
-            content: "✿";
-            font-size: 1rem;
-            color: var(--gold-primary);
-            opacity: 0.2;
-            pointer-events: none;
+        .card-corner--tr::before {
+            top: 0;
+            right: 0;
+            border-width: 1px 1px 0 0;
         }
         .card-corner--bl {
             bottom: 8px;
-            left: 10px;
+            left: 8px;
+        }
+        .card-corner--bl::before {
+            bottom: 0;
+            left: 0;
+            border-width: 0 0 1px 1px;
+        }
+
+        .card-corner--tl {
+            top: 8px;
+            left: 8px;
+        }
+        .card-corner--tl::before {
+            top: 0;
+            left: 0;
+            border-width: 1px 0 0 1px;
+        }
+        .card-corner--br {
+            bottom: 8px;
+            right: 8px;
+        }
+        .card-corner--br::before {
+            bottom: 0;
+            right: 0;
+            border-width: 0 1px 1px 0;
+        }
+
+        .card-corner-ornament {
+            position: absolute;
+            font-size: 0.6rem;
+            color: var(--gold-primary);
+            opacity: 0.2;
+            pointer-events: none;
+            font-family: var(--font-serif);
+        }
+        .card-corner--tr .card-corner-ornament {
+            top: -1px;
+            right: -1px;
+        }
+        .card-corner--bl .card-corner-ornament {
+            bottom: -1px;
+            left: -1px;
+        }
+        .card-corner--tl .card-corner-ornament {
+            top: -1px;
+            left: -1px;
+        }
+        .card-corner--br .card-corner-ornament {
+            bottom: -1px;
+            right: -1px;
         }
 
         .card-glow {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 350px;
-            height: 350px;
+            width: 400px;
+            height: 400px;
             transform: translate(-50%, -50%);
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, rgba(122, 27, 46, 0.04) 40%, transparent 70%);
             pointer-events: none;
-            animation: glowPulse 5s ease-in-out infinite;
+            animation: glowPulse 6s ease-in-out infinite;
         }
 
         .card-band {
             position: absolute;
             top: 0;
-            left: 20%;
-            right: 20%;
+            left: 15%;
+            right: 15%;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.35), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
             pointer-events: none;
+        }
+        .card-band::before {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 25%;
+            right: 25%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.15), transparent);
         }
 
         .card-band-ornament {
             position: absolute;
-            top: -5px;
+            top: -6px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             color: var(--gold-primary);
-            opacity: 0.3;
+            opacity: 0.35;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .glass-card:hover .card-band-ornament {
+            opacity: 0.6;
+            transform: translateX(-50%) scale(1.15);
         }
 
         .card-separator {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin: -10px 0 20px;
-            font-size: 0.55rem;
+            gap: 12px;
+            margin: -8px 0 22px;
+            font-size: 0.6rem;
             color: var(--gold-primary);
-            opacity: 0.2;
+            opacity: 0.25;
         }
         .card-separator::before,
         .card-separator::after {
             content: "";
             flex: 1;
             height: 1px;
-            max-width: 70px;
-            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+            max-width: 80px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.35), transparent);
         }
 
         .card-dust {
@@ -416,53 +573,62 @@
 
         .dust-particle {
             position: absolute;
+            pointer-events: none;
+            opacity: 0;
+            border-radius: 50%;
+        }
+        .dust-particle--gold {
             width: 2.5px;
             height: 2.5px;
             background: var(--gold-primary);
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0;
-            box-shadow: 0 0 4px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
         }
-        .dust-particle:nth-child(1) {
-            top: 18%;
-            left: 12%;
-            animation: dustFloat1 6s ease-in-out infinite 0s;
+        .dust-particle--rose {
+            width: 2px;
+            height: 2px;
+            background: rgba(253, 107, 127, 0.7);
+            box-shadow: 0 0 4px rgba(253, 107, 127, 0.3);
         }
-        .dust-particle:nth-child(2) {
-            top: 35%;
-            left: 88%;
-            animation: dustFloat2 7s ease-in-out infinite 1.2s;
+        .dust-particle--white {
+            width: 1.5px;
+            height: 1.5px;
+            background: rgba(253, 251, 247, 0.6);
+            box-shadow: 0 0 3px rgba(253, 251, 247, 0.2);
         }
-        .dust-particle:nth-child(3) {
-            top: 55%;
-            left: 8%;
-            animation: dustFloat3 5.5s ease-in-out infinite 2.5s;
-        }
-        .dust-particle:nth-child(4) {
-            top: 75%;
-            left: 82%;
-            animation: dustFloat1 7.5s ease-in-out infinite 0.6s;
-        }
-        .dust-particle:nth-child(5) {
-            top: 25%;
-            left: 22%;
-            animation: dustFloat2 6.5s ease-in-out infinite 3.2s;
-        }
-        .dust-particle:nth-child(6) {
-            top: 65%;
-            left: 78%;
-            animation: dustFloat3 8s ease-in-out infinite 1.8s;
-        }
+
+        .dust-particle:nth-child(1) { top: 15%; left: 10%; animation: dustFloat1 7s ease-in-out infinite 0s; }
+        .dust-particle:nth-child(2) { top: 30%; left: 85%; animation: dustFloat2 8s ease-in-out infinite 1.5s; }
+        .dust-particle:nth-child(3) { top: 50%; left: 7%; animation: dustFloat3 6.5s ease-in-out infinite 3s; }
+        .dust-particle:nth-child(4) { top: 70%; left: 80%; animation: dustFloat1 9s ease-in-out infinite 0.8s; }
+        .dust-particle:nth-child(5) { top: 20%; left: 25%; animation: dustFloat2 7.5s ease-in-out infinite 3.5s; }
+        .dust-particle:nth-child(6) { top: 60%; left: 75%; animation: dustFloat3 8.5s ease-in-out infinite 2s; }
+        .dust-particle:nth-child(7) { top: 40%; left: 90%; animation: dustFloat1 6s ease-in-out infinite 4s; }
+        .dust-particle:nth-child(8) { top: 80%; left: 15%; animation: dustFloat2 7s ease-in-out infinite 1s; }
+        .dust-particle:nth-child(9) { top: 10%; left: 70%; animation: dustFloat3 8s ease-in-out infinite 5s; }
+        .dust-particle:nth-child(10) { top: 55%; left: 92%; animation: dustFloat1 6.5s ease-in-out infinite 2.8s; }
+        .dust-particle:nth-child(11) { top: 45%; left: 5%; animation: dustFloat2 7.8s ease-in-out infinite 4.5s; }
+        .dust-particle:nth-child(12) { top: 85%; left: 65%; animation: dustFloat3 9.5s ease-in-out infinite 0.3s; }
 
         .card-frame {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            bottom: 15px;
-            border: 1px solid rgba(212, 175, 55, 0.12);
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
             pointer-events: none;
+            border-radius: 8px;
+        }
+
+        .card-frame-inner {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            right: 18px;
+            bottom: 18px;
+            border: 1px solid rgba(212, 175, 55, 0.06);
+            pointer-events: none;
+            border-radius: 6px;
         }
 
         .cinematic-sub {
@@ -947,17 +1113,26 @@
         <section id="couple">
             <div class="glass-card">
                 <div class="card-frame"></div>
-                <div class="card-corner card-corner--tr"></div>
-                <div class="card-corner card-corner--bl"></div>
+                <div class="card-frame-inner"></div>
+                <div class="card-corner card-corner--tr"><span class="card-corner-ornament">❧</span></div>
+                <div class="card-corner card-corner--bl"><span class="card-corner-ornament">❧</span></div>
+                <div class="card-corner card-corner--tl"><span class="card-corner-ornament">❧</span></div>
+                <div class="card-corner card-corner--br"><span class="card-corner-ornament">❧</span></div>
                 <div class="card-glow"></div>
                 <div class="card-band"><span class="card-band-ornament">◈</span></div>
                 <div class="card-dust">
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
                 </div>
                 <p class="cinematic-sub">Meet the Couple</p>
                 <h2 class="grand-heading" style="font-size:2.2rem;">The Bride &amp; Groom</h2>
@@ -991,17 +1166,26 @@
         <section id="revelation">
             <div class="glass-card">
                 <div class="card-frame"></div>
-                <div class="card-corner card-corner--tr"></div>
-                <div class="card-corner card-corner--bl"></div>
+                <div class="card-frame-inner"></div>
+                <div class="card-corner card-corner--tr"><span class="card-corner-ornament">❧</span></div>
+                <div class="card-corner card-corner--bl"><span class="card-corner-ornament">❧</span></div>
+                <div class="card-corner card-corner--tl"><span class="card-corner-ornament">❧</span></div>
+                <div class="card-corner card-corner--br"><span class="card-corner-ornament">❧</span></div>
                 <div class="card-glow"></div>
                 <div class="card-band"><span class="card-band-ornament">◈</span></div>
                 <div class="card-dust">
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
                 </div>
                 <!-- <p class="cinematic-sub">Exclusive Ritual Reveal</p> -->
                 <h2 class="grand-heading" style="font-size: 2.5rem;">Discover the Auspicious Day</h2>
@@ -1026,17 +1210,26 @@
         <section id="blessings">
             <div class="glass-card">
                 <div class="card-frame"></div>
-                <div class="card-corner card-corner--tr"></div>
-                <div class="card-corner card-corner--bl"></div>
+                <div class="card-frame-inner"></div>
+                <div class="card-corner card-corner--tr"><span class="card-corner-ornament">❧</span></div>
+                <div class="card-corner card-corner--bl"><span class="card-corner-ornament">❧</span></div>
+                <div class="card-corner card-corner--tl"><span class="card-corner-ornament">❧</span></div>
+                <div class="card-corner card-corner--br"><span class="card-corner-ornament">❧</span></div>
                 <div class="card-glow"></div>
                 <div class="card-band"><span class="card-band-ornament">◈</span></div>
                 <div class="card-dust">
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
-                    <div class="dust-particle"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
+                    <div class="dust-particle dust-particle--gold"></div>
+                    <div class="dust-particle dust-particle--rose"></div>
+                    <div class="dust-particle dust-particle--white"></div>
                 </div>
                 <h2 class="grand-heading" style="font-size: 2.5rem;">Share Your Blessings</h2>
                 <div class="card-separator">◈</div>
