@@ -283,6 +283,7 @@
             height: 50px;
             pointer-events: none;
         }
+
         .hero-corner::before {
             content: "";
             position: absolute;
@@ -291,14 +292,50 @@
             border-color: rgba(212, 175, 55, 0.2);
             border-style: solid;
         }
-        .hero-corner--tl { top: 20px; left: 20px; }
-        .hero-corner--tl::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
-        .hero-corner--tr { top: 20px; right: 20px; }
-        .hero-corner--tr::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
-        .hero-corner--bl { bottom: 20px; left: 20px; }
-        .hero-corner--bl::before { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
-        .hero-corner--br { bottom: 20px; right: 20px; }
-        .hero-corner--br::before { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+        .hero-corner--tl {
+            top: 20px;
+            left: 20px;
+        }
+
+        .hero-corner--tl::before {
+            top: 0;
+            left: 0;
+            border-width: 2px 0 0 2px;
+        }
+
+        .hero-corner--tr {
+            top: 20px;
+            right: 20px;
+        }
+
+        .hero-corner--tr::before {
+            top: 0;
+            right: 0;
+            border-width: 2px 2px 0 0;
+        }
+
+        .hero-corner--bl {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .hero-corner--bl::before {
+            bottom: 0;
+            left: 0;
+            border-width: 0 0 2px 2px;
+        }
+
+        .hero-corner--br {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .hero-corner--br::before {
+            bottom: 0;
+            right: 0;
+            border-width: 0 2px 2px 0;
+        }
 
         .hero-corner-icon {
             position: absolute;
@@ -308,10 +345,26 @@
             pointer-events: none;
             font-family: var(--font-serif);
         }
-        .hero-corner--tl .hero-corner-icon { top: -4px; left: -4px; }
-        .hero-corner--tr .hero-corner-icon { top: -4px; right: -4px; }
-        .hero-corner--bl .hero-corner-icon { bottom: -4px; left: -4px; }
-        .hero-corner--br .hero-corner-icon { bottom: -4px; right: -4px; }
+
+        .hero-corner--tl .hero-corner-icon {
+            top: -4px;
+            left: -4px;
+        }
+
+        .hero-corner--tr .hero-corner-icon {
+            top: -4px;
+            right: -4px;
+        }
+
+        .hero-corner--bl .hero-corner-icon {
+            bottom: -4px;
+            left: -4px;
+        }
+
+        .hero-corner--br .hero-corner-icon {
+            bottom: -4px;
+            right: -4px;
+        }
 
         .hero-band {
             position: absolute;
@@ -322,6 +375,7 @@
             background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
             pointer-events: none;
         }
+
         .hero-band--bottom {
             top: auto;
             bottom: 10px;
@@ -413,8 +467,17 @@
         }
 
         @keyframes floatUpBob {
-            0%, 100% { transform: translateY(0); box-shadow: 0 0 15px rgba(212, 175, 55, 0.1); }
-            50% { transform: translateY(-6px); box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+                box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+            }
+
+            50% {
+                transform: translateY(-6px);
+                box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            }
         }
 
         .float-up-ring {
@@ -427,8 +490,17 @@
         }
 
         @keyframes ringPulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.06); }
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.6;
+                transform: scale(1.06);
+            }
         }
 
         @media (max-height: 700px) {
@@ -1196,9 +1268,19 @@
         }
 
         @keyframes heartPulse {
-            0%, 100% { transform: scale(1); }
-            30% { transform: scale(1.35); }
-            60% { transform: scale(0.95); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.35);
+            }
+
+            60% {
+                transform: scale(0.95);
+            }
         }
 
         /* COUPLE SECTION */
@@ -1643,49 +1725,56 @@
                 font-size: 0.9rem;
             }
 
-        .hero-scroll-arrow {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            color: var(--gold-primary);
-            opacity: 0.7;
-            z-index: 10;
-            cursor: pointer;
-            animation: scrollBob 2s ease-in-out infinite;
-            pointer-events: auto;
-        }
+            .hero-scroll-arrow {
+                position: absolute;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
+                color: var(--gold-primary);
+                opacity: 0.7;
+                z-index: 10;
+                cursor: pointer;
+                animation: scrollBob 2s ease-in-out infinite;
+                pointer-events: auto;
+            }
 
-        .hero-scroll-arrow::before {
-            content: "scroll";
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-family: var(--font-serif);
-            opacity: 0.8;
-        }
+            .hero-scroll-arrow::before {
+                content: "scroll";
+                font-size: 0.7rem;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                font-family: var(--font-serif);
+                opacity: 0.8;
+            }
 
-        .hero-scroll-arrow::after {
-            content: "⌄";
-            font-size: 1.8rem;
-            line-height: 1;
-            margin-top: -2px;
-        }
+            .hero-scroll-arrow::after {
+                content: "⌄";
+                font-size: 1.8rem;
+                line-height: 1;
+                margin-top: -2px;
+            }
 
-        @keyframes scrollBob {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(8px); }
-        }
+            @keyframes scrollBob {
 
-        .hero-scroll-arrow:hover {
-            opacity: 1;
-        }
+                0%,
+                100% {
+                    transform: translateX(-50%) translateY(0);
+                }
 
-        .premium-controls {
+                50% {
+                    transform: translateX(-50%) translateY(8px);
+                }
+            }
+
+            .hero-scroll-arrow:hover {
+                opacity: 1;
+            }
+
+            .premium-controls {
                 bottom: 20px;
                 left: 20px;
                 gap: 10px;
@@ -1960,6 +2049,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <script>
         var firebaseConfig = {
@@ -2060,6 +2150,9 @@
                 const bar = document.getElementById("loader-progress-bar");
                 if (bar) bar.style.width = pct + "%";
             }
+
+            // EmailJS init
+            emailjs.init("-ukhPWMlckZidPP0w");
 
             // 1. ENGINE LOADER LIFECYCLE
             document.getElementById("enter-experience-trigger").addEventListener("click", () => {
@@ -2506,6 +2599,15 @@
                     reactions: {},
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 }).then(() => {
+                    // Send email notification via EmailJS
+                    emailjs.send("service_udbqldl", "template_16bnrh9", {
+                        from_name: name,
+                        message: msg,
+                        to_email: "krvish21@gmail.com"
+                    }).catch(function (err) {
+                        console.error("EmailJS error:", err);
+                    });
+
                     document.getElementById("guest-name").value = "";
                     document.getElementById("guest-message").value = "";
                     submitBtn.disabled = false;
