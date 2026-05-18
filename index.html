@@ -2194,10 +2194,31 @@
             var sessionId = Math.random().toString(36).slice(2) + Date.now();
             var sessionRef = rtdb.ref("presence/" + sessionId);
             var viewerText = document.getElementById("viewer-text");
+            var heartbeat;
 
-            // Register onDisconnect first, then set value
-            sessionRef.onDisconnect().remove(function () {
-                sessionRef.set({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
+            function goOnline() {
+                sessionRef.onDisconnect().remove(function () {
+                    sessionRef.set({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
+                });
+                // Heartbeat every 15s while visible
+                heartbeat = setInterval(function () {
+                    sessionRef.set({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
+                }, 15000);
+            }
+
+            function goOffline() {
+                clearInterval(heartbeat);
+                sessionRef.remove();
+            }
+
+            goOnline();
+
+            document.addEventListener("visibilitychange", function () {
+                if (document.hidden) {
+                    goOffline();
+                } else {
+                    goOnline();
+                }
             });
 
             // Track active sessions (lastSeen within 45s)
@@ -2211,11 +2232,6 @@
                 });
                 viewerText.textContent = active <= 1 ? "you're here" : active + " viewing";
             });
-
-            // Heartbeat every 15s to keep session alive
-            var heartbeat = setInterval(function () {
-                sessionRef.set({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
-            }, 15000);
 
             // 1. ENGINE LOADER LIFECYCLE
             document.getElementById("enter-experience-trigger").addEventListener("click", () => {
