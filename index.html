@@ -513,8 +513,15 @@
         }
 
         @keyframes dotPulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         @keyframes ringPulse {
@@ -2576,7 +2583,7 @@
                 el.className = "blessing-item";
                 el.dataset.id = doc.id;
                 var reactions = data.reactions || {};
-                var emojis = ["🙏", "❤️", "🎉", "✨"];
+                var emojis = ["🙏", "❤️", "😂", "✨"];
                 var reactHtml = '<div class="blessing-reactions">';
                 emojis.forEach(function (e) {
                     var count = reactions[e] || 0;

@@ -513,8 +513,15 @@
         }
 
         @keyframes dotPulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         @keyframes ringPulse {
@@ -1876,7 +1883,8 @@
         <div class="loader-progress-wrap">
             <div class="loader-progress-bar" id="loader-progress-bar"></div>
         </div>
-        <button class="enter-btn" id="enter-experience-trigger" data-text-key="enter-btn">समारोह में प्रवेश करें</button>
+        <button class="enter-btn" id="enter-experience-trigger" data-text-key="enter-btn">समारोह में प्रवेश
+            करें</button>
     </div>
 
     <div class="premium-controls">
@@ -1913,7 +1921,8 @@
                     <span class="initial-trigger" id="initial-v">V</span>
                 </div>
                 <h1 class="grand-heading" data-text-key="hero-heading">मानस्विका और विश्वजीत</h1>
-                <p class="romantic-prose" data-text-key="hero-subtitle">हमारे दिलों में खुशी के साथ, हम आपको हमारी हमेशा की शुरुआत
+                <p class="romantic-prose" data-text-key="hero-subtitle">हमारे दिलों में खुशी के साथ, हम आपको हमारी हमेशा
+                    की शुरुआत
                     — रोका और आशीर्वाद समारोह — का गवाह बनने के लिए आमंत्रित करते हैं</p>
 
                 <div class="hero-scroll-arrow"></div>
@@ -1999,7 +2008,8 @@
                     <div class="dust-particle dust-particle--white"></div>
                 </div>
                 <!-- <p class="cinematic-sub">Exclusive Ritual Reveal</p> -->
-                <h2 class="grand-heading" style="font-size: 2.5rem;" data-text-key="revelation-heading">शुभ दिवस की खोज करें</h2>
+                <h2 class="grand-heading" style="font-size: 2.5rem;" data-text-key="revelation-heading">शुभ दिवस की खोज
+                    करें</h2>
                 <div class="card-separator">◈</div>
                 <!-- <p class="romantic-prose" style="font-size: 1.2rem; margin-bottom:20px;">Gently scratch the golden veil
                     to reveal the date we begin our journey together.</p> -->
@@ -2043,14 +2053,16 @@
                     <div class="dust-particle dust-particle--rose"></div>
                     <div class="dust-particle dust-particle--white"></div>
                 </div>
-                <h2 class="grand-heading" style="font-size: 2.5rem;" data-text-key="blessings-heading">अपना आशीर्वाद साझा करें</h2>
+                <h2 class="grand-heading" style="font-size: 2.5rem;" data-text-key="blessings-heading">अपना आशीर्वाद
+                    साझा करें</h2>
                 <div class="card-separator">◈</div>
                 <div class="blessings-input-zone">
                     <input type="text" id="guest-name" class="premium-input" placeholder="आपका नाम"
                         data-text-key="guest-name-placeholder">
                     <input type="text" id="guest-message" class="premium-input" placeholder="जोड़े के लिए शुभकामना"
                         data-text-key="guest-message-placeholder">
-                    <button class="premium-btn" id="submit-blessing-trigger" data-text-key="submit-btn">जोड़े को आशीर्वाद दें</button>
+                    <button class="premium-btn" id="submit-blessing-trigger" data-text-key="submit-btn">जोड़े को
+                        आशीर्वाद दें</button>
                 </div>
                 <div id="live-blessings-container"></div>
                 <div class="blessings-footer">
@@ -2063,10 +2075,12 @@
     </main>
 
     <div id="easter-egg-overlay">
-        <h1 class="grand-heading" style="font-size:3.5rem;" data-text-key="easter-heading">दो राज्यों की प्रेम कहानी</h1>
+        <h1 class="grand-heading" style="font-size:3.5rem;" data-text-key="easter-heading">दो राज्यों की प्रेम कहानी
+        </h1>
         <p class="romantic-prose" style="color: var(--gold-primary);" data-text-key="easter-sub">विश्वजीत ❤️ मानस्विका
         </p>
-        <p class="cinematic-sub" style="margin-top: 30px; font-size:0.7rem;" data-text-key="easter-click">वापस जाने के लिए कहीं भी क्लिक करें</p>
+        <p class="cinematic-sub" style="margin-top: 30px; font-size:0.7rem;" data-text-key="easter-click">वापस जाने के
+            लिए कहीं भी क्लिक करें</p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -2538,7 +2552,7 @@
                 el.className = "blessing-item";
                 el.dataset.id = doc.id;
                 var reactions = data.reactions || {};
-                var emojis = ["🙏", "❤️", "🎉", "✨"];
+                var emojis = ["🙏", "❤️", "😂", "✨"];
                 var reactHtml = '<div class="blessing-reactions">';
                 emojis.forEach(function (e) {
                     var count = reactions[e] || 0;
