@@ -21,7 +21,7 @@
         href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 
     <style>
         :root {
@@ -175,7 +175,7 @@
             letter-spacing: 4px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
             animation: enterPulse 2.6s ease-in-out infinite;
         }
@@ -275,6 +275,7 @@
                 inset 0 0 40px rgba(212, 175, 55, 0.03),
                 0 0 40px rgba(212, 175, 55, 0.03);
             animation: royalBorderGlow 4s ease-in-out infinite;
+            will-change: box-shadow, border-color;
         }
 
         .hero-corner {
@@ -444,7 +445,7 @@
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(10px);
-            transition: all 0.4s ease;
+            transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
             opacity: 0;
             pointer-events: none;
             transform: translateY(10px);
@@ -921,6 +922,7 @@
                 inset 0 -1px 0 rgba(212, 175, 55, 0.04);
             animation: borderShimmer 5s ease-in-out infinite, cardBreath 8s ease-in-out infinite;
             transition: box-shadow 0.6s ease, border-color 0.6s ease;
+            will-change: transform, box-shadow, border-color;
         }
 
         .glass-card::before {
@@ -1125,6 +1127,7 @@
             pointer-events: none;
             opacity: 0;
             border-radius: 50%;
+            will-change: transform, opacity;
         }
 
         .dust-particle--gold {
@@ -1295,6 +1298,7 @@
             transition: transform 0.3s;
             animation: heartPulse 1.5s ease-in-out infinite;
             display: inline-block;
+            will-change: transform;
         }
 
         .heart-center:hover {
@@ -1914,7 +1918,7 @@
                 <div class="hero-band hero-band--bottom"></div>
 
                 <!-- <p class="cinematic-sub">The Royal Union Announcement</p> -->
-                <img class="hero-hands" src="images/hands-sketch-gold.png" alt="" loading="lazy">
+                <img class="hero-hands" src="images/hands-sketch-gold.png" alt="" width="600" height="600" fetchpriority="high">
                 <div class="hero-initials-container">
                     <span class="initial-trigger" id="initial-m">M</span>
                     <i class="fa-solid fa-heart heart-center" id="heart-egg"></i>
@@ -1962,7 +1966,7 @@
                         <div class="couple-photo-wrap">
                             <picture>
                                 <source srcset="images/manasvika.webp" type="image/webp">
-                                <img class="couple-photo" src="images/manasvika-opt.jpg" alt="Manasvika" loading="lazy">
+                                <img class="couple-photo" src="images/manasvika-opt.jpg" alt="Manasvika" width="282" height="500" loading="lazy">
                             </picture>
                         </div>
                         <span class="couple-name" data-text-key="bride-name">मानस्विका</span>
@@ -1973,7 +1977,7 @@
                         <div class="couple-photo-wrap">
                             <picture>
                                 <source srcset="images/vishwajeet.webp" type="image/webp">
-                                <img class="couple-photo" src="images/vishwajeet.jpg" alt="Vishwajeet" loading="lazy">
+                                <img class="couple-photo" src="images/vishwajeet.jpg" alt="Vishwajeet" width="282" height="500" loading="lazy">
                             </picture>
                         </div>
                         <span class="couple-name" data-text-key="groom-name">विश्वजीत</span>
@@ -2114,10 +2118,12 @@
             var audioNode, isPlaying = false;
             var burstParticles = [];
             var mouseX = 0, mouseY = 0;
+            var winW = window.innerWidth, winH = window.innerHeight;
+            window.addEventListener("resize", function () { winW = window.innerWidth; winH = window.innerHeight; });
             document.addEventListener("mousemove", function (e) {
-                mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-                mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-            });
+                mouseX = (e.clientX / winW - 0.5) * 2;
+                mouseY = (e.clientY / winH - 0.5) * 2;
+            }, { passive: true });
 
             function triggerFlowerBurst(count = 40, color = 0xD4AF37, cx = 0, cy = 0, cz = 5) {
                 const geo = new THREE.CircleGeometry(0.28, 6);
@@ -2249,7 +2255,7 @@
                         } else {
                             floatBtn.classList.remove("visible");
                         }
-                    });
+                    }, { passive: true });
                     floatBtn.addEventListener("click", function () {
                         mainEl.scrollTo({ top: 0, behavior: "smooth" });
                     });
@@ -2392,6 +2398,7 @@
 
                 function frameLoop() {
                     requestAnimationFrame(frameLoop);
+                    if (document.hidden) return;
                     starParticles.rotation.y += 0.001 + mouseX * 0.0003;
                     starParticles.rotation.x += mouseY * 0.00015;
                     flowerPetals.forEach(p => {
@@ -2419,9 +2426,9 @@
                             scene.remove(p);
                             p.material.dispose();
                             p.geometry.dispose();
-                            burstParticles.splice(i, 1);
                         }
                     }
+                    burstParticles = burstParticles.filter(function (p) { return p.userData.life > 0; });
                     renderer.render(scene, camera);
                 }
                 frameLoop();
@@ -2480,7 +2487,7 @@
 
                     var dx = x - swipeStartX;
                     var dy = y - swipeStartY;
-                    if (Math.sqrt(dx * dx + dy * dy) > 10) hasMoved = true;
+                    if (dx * dx + dy * dy > 100) hasMoved = true;
 
                     ctx.globalCompositeOperation = 'destination-out';
                     ctx.beginPath();
